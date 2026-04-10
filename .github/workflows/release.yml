@@ -52,3 +52,4 @@ jobs:
             See the [changelog](https://github.com/CJKaufman/ArrDeck/commits/${{ github.ref_name }}) for details.
           releaseDraft: false
           prerelease: false
+          includeUpdaterJson: true
