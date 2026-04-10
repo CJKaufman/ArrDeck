@@ -28,3 +28,6 @@ src-tauri/target/
 
 # Tauri gen folder (auto-generated)
 src-tauri/gen/
+
+# Internal session logs — local only, not for public repo
+updates/

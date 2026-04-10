@@ -17,7 +17,7 @@ export interface SettingsState {
     username: string;
     password: string;
   };
-  theme: 'dark' | 'light' | 'system' | 'minimal' | 'autobrr' | 'swizzin' | 'kyle' | 'nightwalker' | 'napster';
+  theme: 'dark' | 'light' | 'system' | 'obsidian' | 'void' | 'matrix' | 'nebula' | 'glacier' | 'ghost';
   startupPage: string;
   dashboardRefreshMs: number;
   queueRefreshMs: number;

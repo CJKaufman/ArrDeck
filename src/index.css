@@ -192,7 +192,7 @@
   }
 
   /* MINIMAL - Near-black obsidian / Cyan */
-  [data-theme="minimal"] {
+  [data-theme="obsidian"] {
     --bg-base: #111111;
     --bg-surface: #1a1a1a;
     --bg-sidebar: #0d0d0d;
@@ -203,7 +203,7 @@
   }
 
   /* AUTOBRR - Dark blue-black / Blue */
-  [data-theme="autobrr"] {
+  [data-theme="void"] {
     --bg-base: #0d1117;
     --bg-surface: #161b22;
     --bg-sidebar: #0d1117;
@@ -214,7 +214,7 @@
   }
 
   /* KYLE - Dark purple / Magenta */
-  [data-theme="kyle"] {
+  [data-theme="nebula"] {
     --bg-base: #13112a;
     --bg-surface: #1e1b4b;
     --bg-sidebar: #110f22;
@@ -225,7 +225,7 @@
   }
 
   /* NIGHTWALKER - Deep slate navy / Sky blue */
-  [data-theme="nightwalker"] {
+  [data-theme="glacier"] {
     --bg-base: #0f172a;
     --bg-surface: #1e293b;
     --bg-sidebar: #0c1526;
@@ -236,7 +236,7 @@
   }
 
   /* SWIZZIN - Dark warm gray / Emerald */
-  [data-theme="swizzin"] {
+  [data-theme="matrix"] {
     --bg-base: #181818;
     --bg-surface: #242424;
     --bg-sidebar: #222222;
@@ -247,7 +247,7 @@
   }
 
   /* NAPSTER - Light / Blue */
-  [data-theme="napster"] {
+  [data-theme="ghost"] {
     --bg-base: #f1f3f5;
     --bg-surface: #ffffff;
     --bg-sidebar: #e9ecef;

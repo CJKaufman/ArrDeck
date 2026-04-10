@@ -69,7 +69,7 @@ Things still being worked on:
 | **Full Library Management** | Browse Sonarr series and Radarr movies with sort, filter, search and bulk actions |
 | **Prowlarr Health Rail** | Animated per-indexer status bars — green/amber/red with cinematic sweep animation |
 | **qBittorrent Swarm** | High-density torrent table, detail drawer with file tree, per-torrent speed limits |
-| **6 UI Themes** | Minimal · Swizzin · Autobrr · Kyle · Nightwalker · Napster |
+| **6 UI Themes** | Obsidian · Matrix · Void · Nebula · Glacier · Ghost |
 | **Native Performance** | ~35MB RAM at idle, <0.5s launch time. Tauri 2 using Edge WebView2 (no bundled Chromium) |
 | **Windows Notifications** | Native toast notifications for downloads, health warnings and connection events |
 

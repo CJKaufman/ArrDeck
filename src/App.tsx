@@ -25,14 +25,14 @@ function App() {
     root.setAttribute('data-theme', theme);
     
     // Handle standard .dark class for Tailwind compatibility
-    if (['dark', 'minimal', 'swizzin', 'autobrr', 'kyle', 'nightwalker'].includes(theme)) {
+    if (['dark', 'obsidian', 'matrix', 'void', 'nebula', 'glacier'].includes(theme)) {
       root.classList.add('dark');
-    } else if (['light', 'napster'].includes(theme)) {
+    } else if (['light', 'ghost'].includes(theme)) {
       root.classList.remove('dark');
     } else if (theme === 'system') {
       const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       root.classList.toggle('dark', isDark);
-      root.setAttribute('data-theme', isDark ? 'minimal' : 'napster');
+      root.setAttribute('data-theme', isDark ? 'obsidian' : 'ghost');
     }
   }, [theme]);
 

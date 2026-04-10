@@ -37,12 +37,12 @@ export function SettingsPage() {
   const [testingQbt, setTestingQbt] = useState(false);
 
   const themes = [
-    { id: 'minimal', name: 'Minimal', bg: '#0a0a0a', accent: '#00b4d8', label: 'Dark / Cyan' },
-    { id: 'swizzin', name: 'Swizzin', bg: '#0a0b0c', accent: '#00d084', label: 'Dark / Emerald' },
-    { id: 'autobrr', name: 'autobrr', bg: '#0e1012', accent: '#3b82f6', label: 'Dark / Indigo' },
-    { id: 'kyle', name: 'The Kyle', bg: '#0d0b13', accent: '#ff0090', label: 'Dark / Magenta' },
-    { id: 'nightwalker', name: 'Nightwalker', bg: '#0f172a', accent: '#38bdf8', label: 'Dark / Ocean' },
-    { id: 'napster', name: 'Pristine (Napster)', bg: '#f1f3f5', accent: '#1971c2', label: 'Light / Blue' },
+    { id: 'obsidian', name: 'Obsidian', bg: '#0a0a0a', accent: '#00b4d8', label: 'Dark / Cyan' },
+    { id: 'matrix', name: 'Matrix', bg: '#0a0b0c', accent: '#00d084', label: 'Dark / Emerald' },
+    { id: 'void', name: 'Void', bg: '#0e1012', accent: '#3b82f6', label: 'Dark / Indigo' },
+    { id: 'nebula', name: 'Nebula', bg: '#0d0b13', accent: '#ff0090', label: 'Dark / Magenta' },
+    { id: 'glacier', name: 'Glacier', bg: '#0f172a', accent: '#38bdf8', label: 'Dark / Arctic' },
+    { id: 'ghost', name: 'Ghost', bg: '#f1f3f5', accent: '#1971c2', label: 'Light / Blue' },
   ];
 
   const testConnection = async (
@@ -384,7 +384,7 @@ export function SettingsPage() {
                     <Monitor className="h-4 w-4 text-white/40" />
                     <Label className="text-[11px] uppercase font-black tracking-widest text-white/60 italic">Fallback Logic</Label>
                   </div>
-                  <Select value={['minimal', 'swizzin', 'autobrr', 'kyle', 'nightwalker', 'napster'].includes(theme) ? 'custom' : theme} onValueChange={(v: any) => {
+                  <Select value={['obsidian', 'matrix', 'void', 'nebula', 'glacier', 'ghost'].includes(theme) ? 'custom' : theme} onValueChange={(v: any) => {
                     if (v !== 'custom') updateSetting('theme', v);
                   }}>
                     <SelectTrigger className="bg-white/5 border-white/10">
