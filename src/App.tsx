@@ -14,6 +14,8 @@ const SettingsPage = lazy(() => import('./pages/SettingsPage').then(m => ({ defa
 
 import { useSettings } from './hooks/useSettings';
 import { useEffect } from 'react';
+import { UpdaterProvider } from './hooks/useUpdater';
+
 
 function App() {
   const { theme } = useSettings();
@@ -37,26 +39,28 @@ function App() {
   }, [theme]);
 
   return (
-    <BrowserRouter>
-      <Suspense fallback={
-        <div className="h-screen w-screen flex items-center justify-center bg-base">
-          <Loader2 className="h-8 w-8 animate-spin text-accent" />
-        </div>
-      }>
-        <Routes>
-          <Route path="/" element={<AppShell />}>
-            <Route index element={<DashboardPage />} />
-            <Route path="sonarr/*" element={<SonarrPage />} />
-            <Route path="radarr/*" element={<RadarrPage />} />
-            <Route path="prowlarr/*" element={<ProwlarrPage />} />
-            <Route path="qbittorrent/*" element={<QBittorrentPage />} />
-            <Route path="queue" element={<QueuePage />} />
-            <Route path="search" element={<SearchPage />} />
-            <Route path="settings" element={<SettingsPage />} />
-          </Route>
-        </Routes>
-      </Suspense>
-    </BrowserRouter>
+    <UpdaterProvider>
+      <BrowserRouter>
+        <Suspense fallback={
+          <div className="h-screen w-screen flex items-center justify-center bg-base">
+            <Loader2 className="h-8 w-8 animate-spin text-accent" />
+          </div>
+        }>
+          <Routes>
+            <Route path="/" element={<AppShell />}>
+              <Route index element={<DashboardPage />} />
+              <Route path="sonarr/*" element={<SonarrPage />} />
+              <Route path="radarr/*" element={<RadarrPage />} />
+              <Route path="prowlarr/*" element={<ProwlarrPage />} />
+              <Route path="qbittorrent/*" element={<QBittorrentPage />} />
+              <Route path="queue" element={<QueuePage />} />
+              <Route path="search" element={<SearchPage />} />
+              <Route path="settings" element={<SettingsPage />} />
+            </Route>
+          </Routes>
+        </Suspense>
+      </BrowserRouter>
+    </UpdaterProvider>
   );
 }
 

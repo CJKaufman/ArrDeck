@@ -1,18 +1,25 @@
-import { useState, useEffect, useCallback } from 'react';
-import { check, type Update } from '@tauri-apps/plugin-updater';
-import { relaunch } from '@tauri-apps/plugin-process';
+import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react';
+import type { Update } from '@tauri-apps/plugin-updater';
 
 export interface UpdaterState {
   isChecking: boolean;
   update: Update | null;
   isDownloading: boolean;
-  downloadProgress: number; // 0-100
+  downloadProgress: number;
   isInstalling: boolean;
   error: string | null;
   dismissed: boolean;
 }
 
-export function useUpdater() {
+interface UpdaterContextType extends UpdaterState {
+  installUpdate: () => Promise<void>;
+  dismiss: () => void;
+  manualCheck: () => Promise<void>;
+}
+
+const UpdaterContext = createContext<UpdaterContextType | null>(null);
+
+export function UpdaterProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<UpdaterState>({
     isChecking: false,
     update: null,
@@ -29,15 +36,16 @@ export function useUpdater() {
 
     setState(s => ({ ...s, isChecking: true, error: null }));
     try {
+      // Dynamic import to avoid breaking browser/dev builds
+      const { check } = await import('@tauri-apps/plugin-updater');
       const update = await check();
       setState(s => ({ ...s, isChecking: false, update: update ?? null }));
     } catch (err: any) {
-      // Silently swallow in dev — endpoint won't exist locally
+      // Endpoint missing (404) or network error — swallow silently
       setState(s => ({ ...s, isChecking: false, error: null }));
     }
   }, []);
 
-  // Check on mount (after a short delay so the app finishes loading)
   useEffect(() => {
     const timer = setTimeout(checkForUpdate, 3000);
     return () => clearTimeout(timer);
@@ -45,13 +53,10 @@ export function useUpdater() {
 
   const installUpdate = useCallback(async () => {
     if (!state.update) return;
-
     setState(s => ({ ...s, isDownloading: true, downloadProgress: 0 }));
-
     try {
       let downloaded = 0;
       let total = 0;
-
       await state.update.downloadAndInstall((event) => {
         switch (event.event) {
           case 'Started':
@@ -60,10 +65,7 @@ export function useUpdater() {
           case 'Progress':
             downloaded += event.data.chunkLength;
             if (total > 0) {
-              setState(s => ({
-                ...s,
-                downloadProgress: Math.round((downloaded / total) * 100),
-              }));
+              setState(s => ({ ...s, downloadProgress: Math.round((downloaded / total) * 100) }));
             }
             break;
           case 'Finished':
@@ -71,15 +73,10 @@ export function useUpdater() {
             break;
         }
       });
-
+      const { relaunch } = await import('@tauri-apps/plugin-process');
       await relaunch();
     } catch (err: any) {
-      setState(s => ({
-        ...s,
-        isDownloading: false,
-        isInstalling: false,
-        error: err?.message ?? 'Update failed',
-      }));
+      setState(s => ({ ...s, isDownloading: false, isInstalling: false, error: err?.message ?? 'Update failed' }));
     }
   }, [state.update]);
 
@@ -92,5 +89,15 @@ export function useUpdater() {
     await checkForUpdate();
   }, [checkForUpdate]);
 
-  return { ...state, installUpdate, dismiss, manualCheck };
+  return (
+    <UpdaterContext.Provider value={{ ...state, installUpdate, dismiss, manualCheck }}>
+      {children}
+    </UpdaterContext.Provider>
+  );
+}
+
+export function useUpdater() {
+  const ctx = useContext(UpdaterContext);
+  if (!ctx) throw new Error('useUpdater must be used inside <UpdaterProvider>');
+  return ctx;
 }
