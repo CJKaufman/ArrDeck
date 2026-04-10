@@ -46,8 +46,8 @@ export const useSettingsStore = create<SettingsState>()(
       qbittorrent: {
         enabled: false,
         baseUrl: 'http://localhost:8080',
-        username: 'admin',
-        password: 'adminadmin',
+        username: '',
+        password: '',
       },
       theme: 'dark',
       startupPage: '/',
