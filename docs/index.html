@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ArrDeck — Mission Control for Your Media Stack</title>
+  <meta name="description" content="ArrDeck is a cinematic Windows desktop dashboard for managing your entire *arr media automation suite — Sonarr, Radarr, Prowlarr and qBittorrent — from a single, beautiful interface." />
+  <meta property="og:title" content="ArrDeck — Mission Control for Your Media Stack" />
+  <meta property="og:description" content="One dashboard. Every service. Full control." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #080809;
+      --surface:   #0e0f11;
+      --surface-2: #131519;
+      --border:    rgba(255,255,255,0.06);
+      --accent:    #00bcff;
+      --accent-dim: rgba(0,188,255,0.12);
+      --accent-glow: rgba(0,188,255,0.25);
+      --sonarr:    #00b4d8;
+      --radarr:    #f59e0b;
+      --prowlarr:  #a855f7;
+      --qbt:       #22c55e;
+      --text:      #f4f4f5;
+      --muted:     rgba(255,255,255,0.4);
+      --subtle:    rgba(255,255,255,0.08);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ═══ NOISE TEXTURE OVERLAY ═══ */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* ═══ NAV ═══ */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      height: 64px;
+      background: rgba(8,8,9,0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-size: 15px;
+      font-weight: 900;
+      font-style: italic;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    .btn-nav {
+      font-size: 10px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--bg);
+      background: var(--accent);
+      border: none;
+      padding: 8px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.2s, box-shadow 0.2s;
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+    .btn-nav:hover { opacity: 0.85; box-shadow: 0 0 32px var(--accent-glow); }
+
+    /* ═══ HERO ═══ */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+      overflow: hidden;
+    }
+
+    /* Radial glow backdrop */
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 400px;
+      background: radial-gradient(ellipse at center, rgba(0,188,255,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* Animated grid */
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 100%);
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: 1px solid rgba(0,188,255,0.25);
+      padding: 6px 16px;
+      border-radius: 999px;
+      margin-bottom: 32px;
+      position: relative;
+      z-index: 1;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    .hero h1 {
+      font-size: clamp(56px, 9vw, 100px);
+      font-weight: 900;
+      font-style: italic;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      line-height: 0.95;
+      position: relative;
+      z-index: 1;
+      animation: fadeUp 0.8s 0.1s ease both;
+    }
+
+    .hero h1 span {
+      color: var(--accent);
+      text-shadow: 0 0 60px rgba(0,188,255,0.5);
+    }
+
+    .hero-sub {
+      font-size: clamp(14px, 2vw, 18px);
+      font-weight: 400;
+      color: var(--muted);
+      max-width: 560px;
+      line-height: 1.6;
+      margin: 24px 0 48px;
+      position: relative;
+      z-index: 1;
+      animation: fadeUp 0.8s 0.2s ease both;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: #000;
+      background: var(--accent);
+      padding: 14px 32px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.2s;
+      box-shadow: 0 0 40px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,0.2);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 60px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,0.2);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+      background: var(--subtle);
+      border: 1px solid var(--border);
+      padding: 14px 32px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-secondary:hover { color: var(--text); border-color: rgba(255,255,255,0.15); }
+
+    /* ═══ SERVICES STRIP ═══ */
+    .services-strip {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 48px;
+      padding: 24px 48px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      flex-wrap: wrap;
+      animation: fadeUp 0.8s 0.4s ease both;
+      position: relative;
+      z-index: 1;
+    }
+
+    .service-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+    }
+
+    .service-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    /* ═══ APP PREVIEW ═══ */
+    .preview-section {
+      padding: 80px 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 48px;
+    }
+
+    .preview-frame {
+      width: 100%;
+      max-width: 1200px;
+      aspect-ratio: 16/9;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.04),
+        0 40px 80px rgba(0,0,0,0.6),
+        0 0 120px rgba(0,188,255,0.06);
+    }
+
+    /* Fake UI preview rendered in CSS */
+    .fake-sidebar {
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 64px;
+      background: rgba(0,0,0,0.4);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px 0;
+      gap: 8px;
+    }
+
+    .fake-nav-item {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      background: var(--subtle);
+    }
+    .fake-nav-item.active {
+      background: var(--accent-dim);
+      border: 1px solid rgba(0,188,255,0.3);
+    }
+
+    .fake-content {
+      position: absolute;
+      left: 64px; top: 0; right: 0; bottom: 0;
+      padding: 24px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto auto auto;
+      gap: 12px;
+    }
+
+    .fake-card {
+      background: rgba(11,12,14,0.7);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .fake-card::before {
+      content: '';
+      position: absolute;
+      top: -20px; right: -20px;
+      width: 60px; height: 60px;
+      border-radius: 50%;
+      filter: blur(20px);
+      opacity: 0.3;
+    }
+    .fake-card.sonarr::before { background: var(--sonarr); }
+    .fake-card.radarr::before { background: var(--radarr); }
+    .fake-card.prowlarr::before { background: var(--prowlarr); }
+    .fake-card.qbt::before { background: var(--qbt); }
+    .fake-card.accent::before { background: var(--accent); }
+
+    .fake-card.span-2 { grid-column: span 2; }
+    .fake-card.span-3 { grid-column: span 3; }
+
+    .fake-line {
+      height: 8px;
+      border-radius: 4px;
+      background: var(--subtle);
+    }
+    .fake-line.short { width: 40%; }
+    .fake-line.medium { width: 65%; }
+    .fake-line.full { width: 100%; }
+    .fake-line.accent { background: rgba(0,188,255,0.3); }
+    .fake-line.sonarr { background: rgba(0,180,216,0.3); }
+    .fake-line.radarr { background: rgba(245,158,11,0.3); }
+    .fake-line.prowlarr { background: rgba(168,85,247,0.3); }
+    .fake-line.qbt { background: rgba(34,197,94,0.3); }
+
+    .fake-number {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 28px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.9);
+      line-height: 1;
+    }
+
+    .fake-label {
+      font-size: 7px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: rgba(255,255,255,0.3);
+    }
+
+    .fake-bar {
+      height: 4px;
+      border-radius: 2px;
+      background: var(--subtle);
+      overflow: hidden;
+      position: relative;
+    }
+    .fake-bar::after {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      border-radius: 2px;
+      background: var(--accent);
+      animation: progress-scan 3s ease-in-out infinite;
+    }
+    @keyframes progress-scan {
+      0% { width: 30%; }
+      50% { width: 68%; }
+      100% { width: 30%; }
+    }
+
+    .fake-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 7px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+    .fake-status.ok { color: var(--qbt); background: rgba(34,197,94,0.1); }
+    .fake-status.warn { color: var(--radarr); background: rgba(245,158,11,0.1); }
+
+    .fake-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: currentColor;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    /* animated spectral beam on fake preview */
+    .spectral-rail {
+      height: 3px;
+      border-radius: 2px;
+      background: rgba(0,188,255,0.1);
+      overflow: hidden;
+      position: relative;
+    }
+    .spectral-beam {
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 60%;
+      border-radius: 2px;
+      background: linear-gradient(90deg, transparent, #00bcff, #7dd3fc, #00bcff, transparent);
+      box-shadow: 0 0 8px rgba(0,188,255,0.8);
+      animation: beam-scan 3s ease-in-out infinite;
+    }
+    @keyframes beam-scan {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(250%); }
+    }
+
+    /* ═══ FEATURES ═══ */
+    section {
+      padding: 100px 48px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 900;
+      font-style: italic;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+
+    .section-body {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 520px;
+      line-height: 1.7;
+      margin-bottom: 64px;
+    }
+
+    /* ═══ FEATURE GRID ═══ */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      transition: border-color 0.3s, transform 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent-glow), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .feature-card:hover { border-color: rgba(0,188,255,0.2); transform: translateY(-4px); }
+    .feature-card:hover::before { opacity: 1; }
+
+    .feature-icon {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      font-size: 22px;
+    }
+
+    .feature-card h3 {
+      font-size: 16px;
+      font-weight: 900;
+      font-style: italic;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 10px;
+    }
+
+    .feature-card p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ═══ SERVICES SECTION ═══ */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .service-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      transition: all 0.3s;
+    }
+
+    .service-card:hover { transform: translateY(-4px); }
+    .service-card.sonarr { border-color: rgba(0,180,216,0.2); }
+    .service-card.radarr { border-color: rgba(245,158,11,0.2); }
+    .service-card.prowlarr { border-color: rgba(168,85,247,0.2); }
+    .service-card.qbt { border-color: rgba(34,197,94,0.2); }
+
+    .service-icon {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      margin-bottom: 16px;
+    }
+    .sonarr .service-icon { background: rgba(0,180,216,0.1); }
+    .radarr .service-icon { background: rgba(245,158,11,0.1); }
+    .prowlarr .service-icon { background: rgba(168,85,247,0.1); }
+    .qbt .service-icon { background: rgba(34,197,94,0.1); }
+
+    .service-card h3 {
+      font-size: 15px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+    .sonarr h3 { color: var(--sonarr); }
+    .radarr h3 { color: var(--radarr); }
+    .prowlarr h3 { color: var(--prowlarr); }
+    .qbt h3 { color: var(--qbt); }
+
+    .service-card p {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .service-features {
+      margin-top: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .service-feature-item {
+      font-size: 11px;
+      color: rgba(255,255,255,0.5);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .service-feature-item::before {
+      content: '→';
+      font-size: 10px;
+      opacity: 0.5;
+    }
+
+    /* ═══ STATS BAR ═══ */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      margin: 0 48px;
+      max-width: 1280px;
+      margin: 0 auto 80px;
+    }
+
+    .stat-item {
+      background: var(--surface);
+      padding: 40px 32px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 48px;
+      font-weight: 900;
+      font-style: italic;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+    }
+
+    /* ═══ TECH STACK ═══ */
+    .tech-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .tech-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ═══ CTA ═══ */
+    .cta-section {
+      padding: 80px 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(ellipse at center, rgba(0,188,255,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-section h2 {
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 900;
+      font-style: italic;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-section p {
+      font-size: 16px;
+      color: var(--muted);
+      margin-bottom: 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-section .hero-actions {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ═══ FOOTER ═══ */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-left {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .footer-left strong {
+      color: var(--text);
+      font-style: italic;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .footer-right {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .footer-right a {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-right a:hover { color: var(--text); }
+
+    /* ═══ ANIMATIONS ═══ */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-in {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .animate-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ═══ RESPONSIVE ═══ */
+    @media (max-width: 768px) {
+      nav { padding: 0 24px; }
+      .nav-links { display: none; }
+      section { padding: 60px 24px; }
+      .stats-bar { grid-template-columns: repeat(2, 1fr); margin: 0 24px 60px; }
+      footer { padding: 24px; flex-direction: column; text-align: center; }
+      .services-strip { gap: 24px; }
+      .preview-section { padding: 40px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">Arr<span>Deck</span></a>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#stack">Stack</a></li>
+      <li><a href="https://github.com/CJKaufman/ArrDeck" target="_blank">GitHub</a></li>
+    </ul>
+    <a href="https://github.com/CJKaufman/ArrDeck/releases/latest" class="btn-nav">Download</a>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-grid"></div>
+
+    <div class="hero-badge">
+      <span></span>
+      v0.1.0 — Windows Desktop App
+    </div>
+
+    <h1>Mission<br /><span>Control</span><br />for Your Stack</h1>
+
+    <p class="hero-sub">
+      One cinematic dashboard to manage Sonarr, Radarr, Prowlarr and qBittorrent.
+      Built on Tauri 2 — native Windows performance, zero bloat.
+    </p>
+
+    <div class="hero-actions">
+      <a href="https://github.com/CJKaufman/ArrDeck/releases/latest" class="btn-primary">
+        ⬇ Download for Windows
+      </a>
+      <a href="https://github.com/CJKaufman/ArrDeck" class="btn-secondary">
+        ⎇ View Source
+      </a>
+    </div>
+  </div>
+
+  <!-- SERVICES STRIP -->
+  <div class="services-strip">
+    <div class="service-pill">
+      <span class="service-dot" style="background:var(--sonarr);box-shadow:0 0 6px var(--sonarr)"></span>
+      Sonarr
+    </div>
+    <div class="service-pill">
+      <span class="service-dot" style="background:var(--radarr);box-shadow:0 0 6px var(--radarr)"></span>
+      Radarr
+    </div>
+    <div class="service-pill">
+      <span class="service-dot" style="background:var(--prowlarr);box-shadow:0 0 6px var(--prowlarr)"></span>
+      Prowlarr
+    </div>
+    <div class="service-pill">
+      <span class="service-dot" style="background:var(--qbt);box-shadow:0 0 6px var(--qbt)"></span>
+      qBittorrent
+    </div>
+    <div class="service-pill" style="color:var(--muted)">
+      <span style="font-size:12px">⚡</span>
+      ~35MB RAM at idle
+    </div>
+    <div class="service-pill" style="color:var(--muted)">
+      <span style="font-size:12px">🚀</span>
+      &lt;0.5s launch time
+    </div>
+  </div>
+
+  <!-- APP PREVIEW -->
+  <div class="preview-section">
+    <div class="preview-frame">
+      <!-- Fake sidebar -->
+      <div class="fake-sidebar">
+        <div class="fake-nav-item active"></div>
+        <div class="fake-nav-item"></div>
+        <div class="fake-nav-item"></div>
+        <div class="fake-nav-item"></div>
+        <div style="flex:1"></div>
+        <div class="fake-nav-item"></div>
+      </div>
+      <!-- Fake content -->
+      <div class="fake-content">
+        <!-- Row 1: Status cards -->
+        <div class="fake-card sonarr">
+          <div class="fake-label">Sonarr</div>
+          <div class="fake-number">247</div>
+          <div class="fake-line short sonarr"></div>
+          <div class="fake-status ok"><span class="fake-dot"></span>Operational</div>
+        </div>
+        <div class="fake-card radarr">
+          <div class="fake-label">Radarr</div>
+          <div class="fake-number">1,048</div>
+          <div class="fake-line short radarr"></div>
+          <div class="fake-status ok"><span class="fake-dot"></span>Operational</div>
+        </div>
+        <div class="fake-card prowlarr">
+          <div class="fake-label">Prowlarr</div>
+          <div class="fake-number">12</div>
+          <div class="fake-line short prowlarr"></div>
+          <div class="fake-status warn"><span class="fake-dot"></span>1 Warning</div>
+        </div>
+
+        <!-- Row 2: Queue + Chart -->
+        <div class="fake-card span-2 qbt" style="gap:12px">
+          <div class="fake-label">Active Downloads</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div>
+              <div class="fake-line medium" style="height:6px;margin-bottom:5px"></div>
+              <div class="fake-bar"></div>
+            </div>
+            <div>
+              <div class="fake-line full" style="height:6px;margin-bottom:5px;width:80%"></div>
+              <div class="fake-bar" style="--accent:var(--qbt)"></div>
+            </div>
+            <div>
+              <div class="fake-line medium" style="height:6px;margin-bottom:5px;width:55%"></div>
+              <div class="fake-bar"></div>
+            </div>
+          </div>
+        </div>
+        <div class="fake-card accent">
+          <div class="fake-label">Indexer Health</div>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px">
+            <div class="spectral-rail"><div class="spectral-beam"></div></div>
+            <div class="spectral-rail" style="background:rgba(245,158,11,0.1)">
+              <div class="spectral-beam" style="background:linear-gradient(90deg,transparent,#f59e0b,#fbbf24,#f59e0b,transparent);animation-delay:-1s"></div>
+            </div>
+            <div class="spectral-rail">
+              <div class="spectral-beam" style="animation-delay:-0.5s"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 3: Calendar strip -->
+        <div class="fake-card span-3" style="gap:10px">
+          <div class="fake-label">Upcoming Releases</div>
+          <div style="display:flex;gap:8px;overflow:hidden">
+            <div class="fake-line" style="height:32px;border-radius:8px;width:80px;background:rgba(0,180,216,0.15)"></div>
+            <div class="fake-line" style="height:32px;border-radius:8px;width:100px;background:rgba(245,158,11,0.15)"></div>
+            <div class="fake-line" style="height:32px;border-radius:8px;width:90px;background:rgba(0,188,255,0.1)"></div>
+            <div class="fake-line" style="height:32px;border-radius:8px;width:110px;background:rgba(168,85,247,0.1)"></div>
+            <div class="fake-line" style="height:32px;border-radius:8px;width:85px;background:rgba(0,180,216,0.1)"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-bar animate-in" id="stats">
+    <div class="stat-item">
+      <div class="stat-number">4</div>
+      <div class="stat-label">Services Integrated</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">~5MB</div>
+      <div class="stat-label">Installer Size</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">6</div>
+      <div class="stat-label">UI Themes</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">&lt;0.5s</div>
+      <div class="stat-label">Cold Launch</div>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <section id="features">
+    <div class="animate-in">
+      <div class="section-label">Features</div>
+      <h2 class="section-title">Everything you need.<br />Nothing you don't.</h2>
+      <p class="section-body">
+        ArrDeck is built for power users who live inside their media stack.
+        Every pixel is intentional. Every interaction is instant.
+      </p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card animate-in">
+        <div class="feature-icon" style="background:rgba(0,188,255,0.1)">🎛️</div>
+        <h3>Unified Dashboard</h3>
+        <p>Service health, active downloads, upcoming releases and health alerts — all on one screen. No tab switching.</p>
+      </div>
+      <div class="feature-card animate-in">
+        <div class="feature-icon" style="background:rgba(168,85,247,0.1)">📊</div>
+        <h3>Drag & Drop Grid</h3>
+        <p>Rearrange and resize every dashboard widget in edit mode. Your layout, your rules. State persists across restarts.</p>
+      </div>
+      <div class="feature-card animate-in">
+        <div class="feature-icon" style="background:rgba(34,197,94,0.1)">⚡</div>
+        <h3>Native Performance</h3>
+        <p>Built on Tauri 2 using Edge WebView2. Uses ~35MB RAM at idle versus ~250MB for an Electron equivalent.</p>
+      </div>
+      <div class="feature-card animate-in">
+        <div class="feature-icon" style="background:rgba(245,158,11,0.1)">🎨</div>
+        <h3>6 Custom Themes</h3>
+        <p>Minimal, Swizzin, Autobrr, Kyle, Nightwalker and Napster — each with fully calibrated accent colors and surfaces.</p>
+      </div>
+      <div class="feature-card animate-in">
+        <div class="feature-icon" style="background:rgba(0,180,216,0.1)">📺</div>
+        <h3>Full Library Management</h3>
+        <p>Browse your Sonarr and Radarr libraries with grid and list views, bulk actions, sort, filter and live search.</p>
+      </div>
+      <div class="feature-card animate-in">
+        <div class="feature-icon" style="background:rgba(239,68,68,0.1)">🔔</div>
+        <h3>Windows Notifications</h3>
+        <p>Native toast notifications for completed downloads, new health warnings, and connection events — even when minimized.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services" style="background: var(--surface); max-width: 100%; padding: 80px 48px;">
+    <div style="max-width:1280px;margin:0 auto">
+      <div class="animate-in">
+        <div class="section-label">Integrated Services</div>
+        <h2 class="section-title">Your entire stack,<br />under one roof.</h2>
+        <p class="section-body">Full read/write integration with the four pillars of the self-hosted media automation suite.</p>
+      </div>
+
+      <div class="services-grid">
+        <div class="service-card sonarr animate-in">
+          <div class="service-icon">📺</div>
+          <h3>Sonarr</h3>
+          <p>TV series management with episode tracking and quality profiles.</p>
+          <div class="service-features">
+            <div class="service-feature-item">Full series library with poster grid</div>
+            <div class="service-feature-item">Episode list by season</div>
+            <div class="service-feature-item">Queue, calendar, missing & history</div>
+            <div class="service-feature-item">Bulk monitor / delete / profile change</div>
+            <div class="service-feature-item">Interactive release search</div>
+          </div>
+        </div>
+        <div class="service-card radarr animate-in">
+          <div class="service-icon">🎬</div>
+          <h3>Radarr</h3>
+          <p>Movie management with release tracking and file quality monitoring.</p>
+          <div class="service-features">
+            <div class="service-feature-item">Full movie library with poster grid</div>
+            <div class="service-feature-item">Movie detail drawer with file info</div>
+            <div class="service-feature-item">Queue, calendar, missing & history</div>
+            <div class="service-feature-item">Bulk operations support</div>
+            <div class="service-feature-item">Digital / physical release calendar</div>
+          </div>
+        </div>
+        <div class="service-card prowlarr animate-in">
+          <div class="service-icon">🔗</div>
+          <h3>Prowlarr</h3>
+          <p>Indexer management with health diagnostics and grab statistics.</p>
+          <div class="service-features">
+            <div class="service-feature-item">Indexer status with spectral health rail</div>
+            <div class="service-feature-item">Enable / disable / test per indexer</div>
+            <div class="service-feature-item">Grab statistics and history</div>
+            <div class="service-feature-item">Backoff and failure detection</div>
+          </div>
+        </div>
+        <div class="service-card qbt animate-in">
+          <div class="service-icon">⬇</div>
+          <h3>qBittorrent</h3>
+          <p>Full-featured torrent client management with session statistics.</p>
+          <div class="service-features">
+            <div class="service-feature-item">High-density torrent matrix view</div>
+            <div class="service-feature-item">Torrent detail drawer with file tree</div>
+            <div class="service-feature-item">Add by URL / magnet / .torrent file</div>
+            <div class="service-feature-item">Per-torrent speed & ratio limits</div>
+            <div class="service-feature-item">Global transfer stats + session totals</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TECH STACK -->
+  <section id="stack">
+    <div class="animate-in">
+      <div class="section-label">Tech Stack</div>
+      <h2 class="section-title">Purpose-built.<br />Zero compromise.</h2>
+      <p class="section-body">Every technology choice was made to maximize performance, maintainability and developer experience.</p>
+    </div>
+    <div class="tech-row animate-in">
+      <div class="tech-chip">🦀 Tauri 2</div>
+      <div class="tech-chip">⚛ React 19</div>
+      <div class="tech-chip">📘 TypeScript</div>
+      <div class="tech-chip">⚡ Vite 6</div>
+      <div class="tech-chip">🎨 Tailwind CSS v4</div>
+      <div class="tech-chip">🧩 shadcn/ui</div>
+      <div class="tech-chip">🐻 Zustand 5</div>
+      <div class="tech-chip">🔍 TanStack Query</div>
+      <div class="tech-chip">📡 Axios</div>
+      <div class="tech-chip">📊 Recharts</div>
+      <div class="tech-chip">🖥 Edge WebView2</div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <h2>Ready to take<br /><span style="color:var(--accent)">control?</span></h2>
+    <p>Download ArrDeck for Windows — free, open source, no account required.</p>
+    <div class="hero-actions">
+      <a href="https://github.com/CJKaufman/ArrDeck/releases/latest" class="btn-primary">
+        ⬇ Download Latest Release
+      </a>
+      <a href="https://github.com/CJKaufman/ArrDeck" class="btn-secondary">
+        ⭐ Star on GitHub
+      </a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-left">
+      <strong>ArrDeck</strong> — Built by <a href="https://github.com/CJKaufman" style="color:var(--accent);text-decoration:none">CJKaufman</a>.
+      Tauri 2 + React 19. MIT License.
+    </div>
+    <div class="footer-right">
+      <a href="https://github.com/CJKaufman/ArrDeck">GitHub</a>
+      <a href="https://github.com/CJKaufman/ArrDeck/releases">Releases</a>
+      <a href="https://github.com/CJKaufman/ArrDeck/issues">Issues</a>
+    </div>
+  </footer>
+
+  <script>
+    // Intersection Observer for scroll animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+    document.querySelectorAll('.animate-in').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
