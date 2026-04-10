@@ -1,6 +1,8 @@
 <div align="center">
 
-# ⚡ ArrDeck
+<img src="docs/icon.png" alt="ArrDeck Icon" width="120" style="border-radius: 28px;" />
+
+# ArrDeck
 
 ### Mission Control for Your Arr Media Stack
 
