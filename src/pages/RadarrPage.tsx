@@ -28,7 +28,7 @@ export function RadarrPage() {
     isSelectionMode, 
     toggleId, 
     clearSelection 
-  } = useBulkSelection();
+  } = useBulkSelection<number>();
 
   const handleItemClick = (item: any) => {
     setSelectedItem(item);

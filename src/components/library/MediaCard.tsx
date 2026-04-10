@@ -1,7 +1,7 @@
 import { Card, CardContent } from '../ui/card';
 import { clsx } from 'clsx';
 import { Badge } from '../ui/badge';
-import { Monitor, HardDrive, AlertCircle } from 'lucide-react';
+import { Monitor } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import React from 'react';
 

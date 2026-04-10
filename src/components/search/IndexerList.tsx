@@ -3,7 +3,7 @@ import { prowlarrService } from '../../services/prowlarr.service';
 import { useSettingsStore } from '../../stores/settings.store';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
-import { CheckCircle2, XCircle, AlertTriangle, RefreshCw } from 'lucide-react';
+import { CheckCircle2, XCircle, RefreshCw } from 'lucide-react';
 import { Button } from '../ui/button';
 
 export function IndexerList() {

@@ -17,9 +17,6 @@ import { Sheet } from '../components/ui/sheet';
 import { Input } from '../components/ui/input';
 import { 
   Search, 
-  Loader2, 
-  Activity, 
-  Settings as SettingsIcon, 
   AlertCircle,
   Filter,
   ArrowUpDown,
@@ -37,11 +34,10 @@ export function QBittorrentPage() {
   const [selectedTorrent, setSelectedTorrent] = useState<QBittorrentTorrent | null>(null);
   const [isUpdating, setIsUpdating] = useState(false);
 
-  const { torrents, isLoading, isAuthed, refetch } = useQBittorrentTorrents(filter);
+  const { torrents, isLoading, refetch } = useQBittorrentTorrents(filter);
   const { 
     selectedIds, 
     isSelected, 
-    isSelectionMode, 
     toggleId, 
     clearSelection 
   } = useBulkSelection<string>();

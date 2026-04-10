@@ -23,7 +23,7 @@ import {
 } from '../components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { cn } from '../lib/utils';
-import { Check, Palette, Monitor, Sun, Moon, Layers, Boxes } from 'lucide-react';
+import { Check, Palette, Monitor, Layers, Boxes } from 'lucide-react';
 
 export function SettingsPage() {
   const {

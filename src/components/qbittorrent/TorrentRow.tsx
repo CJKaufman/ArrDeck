@@ -1,9 +1,8 @@
 import { QBittorrentTorrent } from '../../types/qbittorrent.types';
 import { Card } from '../ui/card';
-import { Progress } from '../ui/progress';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
-import { Pause, Play, Trash2, ArrowDown, ArrowUp, Clock, Target } from 'lucide-react';
+import { Pause, Play, Trash2, ArrowDown, ArrowUp, Clock } from 'lucide-react';
 import prettyBytes from 'pretty-bytes';
 import { formatDistanceToNow } from 'date-fns';
 import { cn } from '../../lib/utils';
@@ -141,14 +140,15 @@ export function TorrentRow({
               )}
             </div>
           </div>
-          <Progress 
-            value={torrent.progress * 100} 
-            className="h-1 bg-white/[0.02]" 
-            indicatorClassName={cn(
-              "transition-all duration-700 ease-out",
-              torrent.progress === 1 ? "bg-status-ok" : "bg-accent"
-            )} 
-          />
+          <div className="relative h-1 w-full rounded-full bg-white/[0.04] overflow-hidden">
+            <div 
+              className={cn(
+                "absolute left-0 top-0 h-full rounded-full transition-all duration-700 ease-out",
+                torrent.progress === 1 ? "bg-status-ok" : "bg-accent"
+              )}
+              style={{ width: `${torrent.progress * 100}%` }}
+            />
+          </div>
         </div>
       </div>
     </Card>

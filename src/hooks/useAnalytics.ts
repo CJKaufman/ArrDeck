@@ -97,11 +97,9 @@ export function useAnalytics() {
       else distribution.sd++;
     };
 
-    sonarrLibrary.data?.forEach((s: any) => {
-      // For series, we look at the statistics (most common quality)
-      // Note: Sonarr doesn't make this super easy per file in a single call, 
-      // so we use the quality profile as a proxy or just categorized counts if available.
-      // This is an approximation based on the series' primary quality.
+    sonarrLibrary.data?.forEach((_s: any) => {
+      // Note: Sonarr doesn't expose per-file quality easily in a single series call.
+      // Quality distribution is approximated from Radarr movie files below.
     });
 
     radarrLibrary.data?.forEach((m: any) => {
@@ -165,7 +163,6 @@ export function useAnalytics() {
   }, [sonarrLibrary.data, radarrLibrary.data]);
 
   const healthData = useMemo(() => {
-    const total = healthStats.totalFiles + healthStats.missing;
     return [
       { name: 'Healthy', value: healthStats.totalFiles, color: '#22c55e' },
       { name: 'Missing content', value: healthStats.missing, color: '#ef4444' },

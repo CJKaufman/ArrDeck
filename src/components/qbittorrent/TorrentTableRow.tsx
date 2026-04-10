@@ -7,7 +7,6 @@ import {
   Pause, 
   Play, 
   Trash2, 
-  ChevronRight, 
   ArrowDown, 
   ArrowUp,
   CircleDot

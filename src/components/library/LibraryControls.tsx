@@ -44,7 +44,7 @@ export function LibraryControls({
           />
         </div>
 
-        <Select value={filter} onValueChange={onFilterChange}>
+        <Select value={filter} onValueChange={(val) => val && onFilterChange(val as LibraryFilter)}>
           <SelectTrigger className="w-[160px] bg-surface-3 border-border">
             <Filter className="h-4 w-4 mr-2" />
             <SelectValue placeholder="Filter items" />
