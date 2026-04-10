@@ -20,11 +20,11 @@ export function UpdateBanner() {
   return (
     <div className="relative z-50 overflow-hidden">
       {/* Glow line at top */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent to-transparent opacity-60" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-accent to-transparent opacity-60" />
 
       <div className="flex items-center gap-4 px-6 py-3 bg-[#0A0C12]/95 backdrop-blur-md border-b border-accent/20">
         {/* Icon */}
-        <div className="flex-shrink-0">
+        <div className="shrink-0">
           {isInstalling ? (
             <Zap className="h-4 w-4 text-accent animate-pulse" />
           ) : isDownloading ? (
@@ -72,7 +72,7 @@ export function UpdateBanner() {
 
         {/* Actions — only show when update is ready */}
         {update && !isDownloading && !isInstalling && !isChecking && (
-          <div className="flex items-center gap-2 flex-shrink-0">
+          <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={installUpdate}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-accent/15 border border-accent/30 text-accent text-[10px] font-black uppercase tracking-widest hover:bg-accent/25 transition-colors"
@@ -94,7 +94,7 @@ export function UpdateBanner() {
         {isChecking && (
           <button
             onClick={dismiss}
-            className="p-1.5 rounded-lg text-white/20 hover:text-white/40 transition-colors flex-shrink-0"
+            className="p-1.5 rounded-lg text-white/20 hover:text-white/40 transition-colors shrink-0"
             aria-label="Dismiss"
           >
             <X className="h-3.5 w-3.5" />

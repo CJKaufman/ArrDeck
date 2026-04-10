@@ -129,7 +129,7 @@ export function SettingsPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Sonarr */}
             <Card className="bg-[#0B0C0E]/50 backdrop-blur-sm border-sonarr/20 rounded-2xl overflow-hidden shadow-xl group">
-              <CardHeader className="border-b border-white/5 bg-white/[0.02]">
+              <CardHeader className="border-b border-white/5 bg-white/2">
                 <div className="flex items-center justify-between">
                   <div className="flex flex-col gap-0.5">
                     <div className="flex items-center gap-2">
@@ -178,7 +178,7 @@ export function SettingsPage() {
 
             {/* Radarr */}
             <Card className="bg-[#0B0C0E]/50 backdrop-blur-sm border-radarr/20 rounded-2xl overflow-hidden shadow-xl group">
-              <CardHeader className="border-b border-white/5 bg-white/[0.02]">
+              <CardHeader className="border-b border-white/5 bg-white/2">
                 <div className="flex items-center justify-between">
                   <div className="flex flex-col gap-0.5">
                     <div className="flex items-center gap-2">
@@ -227,7 +227,7 @@ export function SettingsPage() {
 
             {/* Prowlarr */}
             <Card className="bg-[#0B0C0E]/50 backdrop-blur-sm border-prowlarr/20 rounded-2xl overflow-hidden shadow-xl group">
-              <CardHeader className="border-b border-white/5 bg-white/[0.02]">
+              <CardHeader className="border-b border-white/5 bg-white/2">
                 <div className="flex items-center justify-between">
                   <div className="flex flex-col gap-0.5">
                     <div className="flex items-center gap-2">
@@ -276,7 +276,7 @@ export function SettingsPage() {
 
             {/* qBittorrent */}
             <Card className="bg-[#0B0C0E]/50 backdrop-blur-sm border-accent/20 rounded-2xl overflow-hidden shadow-xl group">
-              <CardHeader className="border-b border-white/5 bg-white/[0.02]">
+              <CardHeader className="border-b border-white/5 bg-white/2">
                 <div className="flex items-center justify-between">
                   <div className="flex flex-col gap-0.5">
                     <div className="flex items-center gap-2">
@@ -335,7 +335,7 @@ export function SettingsPage() {
 
         <TabsContent value="appearance">
           <Card className="bg-[#0B0C0E]/50 backdrop-blur-sm border-white/5 rounded-2xl overflow-hidden shadow-xl">
-            <CardHeader className="border-b border-white/5 bg-white/[0.02]">
+            <CardHeader className="border-b border-white/5 bg-white/2">
                <div className="flex items-center gap-3">
                   <Palette className="text-accent h-5 w-5" />
                   <div>
@@ -354,7 +354,7 @@ export function SettingsPage() {
                       "flex flex-col items-start p-4 border rounded-2xl transition-all group relative overflow-hidden",
                       theme === t.id 
                         ? "border-accent bg-accent/5 ring-1 ring-accent" 
-                        : "border-white/5 bg-white/[0.02] hover:border-white/20 hover:bg-white/[0.05]"
+                        : "border-white/5 bg-white/2 hover:border-white/20 hover:bg-white/5"
                     )}
                   >
                     <div className="flex items-center justify-between w-full mb-4">
@@ -430,7 +430,7 @@ export function SettingsPage() {
 
         <TabsContent value="behaviour" className="space-y-8">
           <Card className="bg-[#0B0C0E]/50 backdrop-blur-sm border-white/5 rounded-2xl overflow-hidden shadow-xl">
-            <CardHeader className="border-b border-white/5 bg-white/[0.02]">
+            <CardHeader className="border-b border-white/5 bg-white/2">
               <CardTitle className="text-white font-black uppercase italic tracking-tighter text-xl">Behaviour Settings</CardTitle>
               <CardDescription className="text-[9px] font-bold uppercase tracking-widest text-white/30 italic">Initialize startup sequences and polling intervals</CardDescription>
             </CardHeader>
@@ -455,12 +455,12 @@ export function SettingsPage() {
 
         <TabsContent value="about">
           <Card className="bg-[#0B0C0E]/50 backdrop-blur-sm border-white/5 rounded-2xl overflow-hidden shadow-xl">
-            <CardHeader className="border-b border-white/5 bg-white/[0.02]">
+            <CardHeader className="border-b border-white/5 bg-white/2">
               <CardTitle className="text-white font-black uppercase italic tracking-tighter text-xl">Operational Intelligence</CardTitle>
             </CardHeader>
             <CardContent className="space-y-8 p-8">
               <div className="flex items-center gap-6">
-                <div className="h-20 w-20 rounded-3xl overflow-hidden border border-accent/20 shadow-[0_0_24px_rgba(0,180,216,0.15)] flex-shrink-0">
+                <div className="h-20 w-20 rounded-3xl overflow-hidden border border-accent/20 shadow-[0_0_24px_rgba(0,180,216,0.15)] shrink-0">
                   <img src="/icon.png" alt="ArrDeck" className="h-full w-full object-cover" />
                 </div>
                 <div className="space-y-1">
@@ -477,7 +477,7 @@ export function SettingsPage() {
               </div>
 
               {/* Update Control */}
-              <div className="rounded-xl border border-white/5 bg-white/[0.02] p-6 space-y-4">
+              <div className="rounded-xl border border-white/5 bg-white/2 p-6 space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-[11px] font-black uppercase tracking-widest text-white/60 italic">Firmware Channel</p>

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback, type ReactNode, type JSX } from 'react';
 import type { Update } from '@tauri-apps/plugin-updater';
 
 export interface UpdaterState {
@@ -19,7 +19,7 @@ interface UpdaterContextType extends UpdaterState {
 
 const UpdaterContext = createContext<UpdaterContextType | null>(null);
 
-export function UpdaterProvider({ children }: { children: ReactNode }) {
+export function UpdaterProvider({ children }: { children: ReactNode }): JSX.Element {
   const [state, setState] = useState<UpdaterState>({
     isChecking: false,
     update: null,

@@ -23,8 +23,8 @@ const STATE_COLORS: any = {
   downloading: 'text-accent border-accent/30 bg-accent/10',
   uploading: 'text-status-ok border-status-ok/30 bg-status-ok/10',
   stalledDL: 'text-status-warn border-status-warn/30 bg-status-warn/10',
-  pausedDL: 'text-white/20 border-white/5 bg-white/[0.02]',
-  pausedUP: 'text-white/20 border-white/5 bg-white/[0.02]',
+  pausedDL: 'text-white/20 border-white/5 bg-white/2',
+  pausedUP: 'text-white/20 border-white/5 bg-white/2',
   error: 'text-status-error border-status-error/30 bg-status-error/10',
 };
 
@@ -50,7 +50,7 @@ export function TorrentRow({
   return (
     <Card className={cn(
       "relative overflow-hidden bg-[#0B0C0E]/50 backdrop-blur-sm border-white/5 p-3 hover:border-white/10 transition-all duration-300 group",
-      isSelected ? "ring-1 ring-accent border-accent/30 bg-accent/[0.02]" : "",
+      isSelected ? "ring-1 ring-accent border-accent/30 bg-accent/2" : "",
       isSelectionMode && !isSelected ? "opacity-30 grayscale-[0.8] scale-[0.99]" : "opacity-100"
     )} onClick={handleClick}>
       <div className="flex flex-col gap-3">
@@ -140,7 +140,7 @@ export function TorrentRow({
               )}
             </div>
           </div>
-          <div className="relative h-1 w-full rounded-full bg-white/[0.04] overflow-hidden">
+          <div className="relative h-1 w-full rounded-full bg-white/4 overflow-hidden">
             <div 
               className={cn(
                 "absolute left-0 top-0 h-full rounded-full transition-all duration-700 ease-out",
