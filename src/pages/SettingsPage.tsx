@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSettings } from '../hooks/useSettings';
 import { createApiClient } from '../services/api-client';
 import { getQbtClient } from '../services/qbittorrent.service';
@@ -23,7 +23,9 @@ import {
 } from '../components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { cn } from '../lib/utils';
-import { Check, Palette, Monitor, Layers, Boxes } from 'lucide-react';
+import { Check, Palette, Monitor, Layers, RefreshCw, Download, ExternalLink } from 'lucide-react';
+import { useUpdater } from '../hooks/useUpdater';
+import { getVersion } from '@tauri-apps/api/app';
 
 export function SettingsPage() {
   const {
@@ -35,6 +37,13 @@ export function SettingsPage() {
   const [testingRadarr, setTestingRadarr] = useState(false);
   const [testingProwlarr, setTestingProwlarr] = useState(false);
   const [testingQbt, setTestingQbt] = useState(false);
+  const [appVersion, setAppVersion] = useState<string>('...');
+
+  const { update, isChecking, isDownloading, downloadProgress, isInstalling, manualCheck, installUpdate } = useUpdater();
+
+  useEffect(() => {
+    getVersion().catch(() => '0.1.0').then(setAppVersion);
+  }, []);
 
   const themes = [
     { id: 'obsidian', name: 'Obsidian', bg: '#0a0a0a', accent: '#00b4d8', label: 'Dark / Cyan' },
@@ -451,21 +460,88 @@ export function SettingsPage() {
             </CardHeader>
             <CardContent className="space-y-8 p-8">
               <div className="flex items-center gap-6">
-                 <div className="h-20 w-20 rounded-3xl bg-accent/20 border border-accent/30 flex items-center justify-center shadow-[0_0_20px_rgba(0,180,216,0.2)]">
-                    <Boxes size={40} className="text-accent animate-pulse" />
-                 </div>
-                 <div className="space-y-2">
-                    <h4 className="text-2xl font-black text-white italic tracking-tighter italic">ArrDeck <span className="text-white/20">v1.16.1</span></h4>
-                    <p className="text-white/40 text-[10px] font-bold uppercase tracking-widest">A unified high-fidelity dashboard for the *arr fleet.</p>
-                 </div>
+                <div className="h-20 w-20 rounded-3xl overflow-hidden border border-accent/20 shadow-[0_0_24px_rgba(0,180,216,0.15)] flex-shrink-0">
+                  <img src="/icon.png" alt="ArrDeck" className="h-full w-full object-cover" />
+                </div>
+                <div className="space-y-1">
+                  <h4 className="text-2xl font-black text-white italic tracking-tighter">
+                    ArrDeck <span className="text-white/20">v{appVersion}</span>
+                  </h4>
+                  <p className="text-white/40 text-[10px] font-bold uppercase tracking-widest">A unified high-fidelity dashboard for the *arr fleet.</p>
+                  {update && (
+                    <p className="text-accent text-[10px] font-bold uppercase tracking-widest animate-pulse">
+                      ↑ v{update.version} available
+                    </p>
+                  )}
+                </div>
               </div>
-              
+
+              {/* Update Control */}
+              <div className="rounded-xl border border-white/5 bg-white/[0.02] p-6 space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-[11px] font-black uppercase tracking-widest text-white/60 italic">Firmware Channel</p>
+                    <p className="text-[10px] text-white/30 mt-0.5">GitHub Releases · Stable</p>
+                  </div>
+                  <Button
+                    onClick={async () => { await manualCheck(); toast.info('Update check complete'); }}
+                    disabled={isChecking || isDownloading || isInstalling}
+                    variant="outline"
+                    className="text-white/40 hover:text-white text-[10px] font-black uppercase tracking-widest border-white/10 hover:border-accent/40 hover:bg-accent/5 gap-2"
+                  >
+                    <RefreshCw className={cn('h-3 w-3', isChecking && 'animate-spin')} />
+                    {isChecking ? 'Checking…' : 'Check Now'}
+                  </Button>
+                </div>
+
+                {update && !isDownloading && !isInstalling && (
+                  <div className="flex items-center justify-between p-3 rounded-lg bg-accent/5 border border-accent/20">
+                    <div>
+                      <p className="text-[10px] font-black uppercase tracking-widest text-accent">Update Ready — v{update.version}</p>
+                    </div>
+                    <Button
+                      onClick={installUpdate}
+                      className="bg-accent/15 text-accent border border-accent/30 hover:bg-accent/25 text-[10px] font-black uppercase tracking-widest gap-1.5"
+                    >
+                      <Download className="h-3 w-3" />
+                      Install
+                    </Button>
+                  </div>
+                )}
+
+                {isDownloading && (
+                  <div className="space-y-2">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-white/50">Downloading — {downloadProgress}%</p>
+                    <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-accent rounded-full transition-all duration-300"
+                        style={{ width: `${downloadProgress}%` }}
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {isInstalling && (
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-accent animate-pulse">Installing — relaunching shortly…</p>
+                )}
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Button variant="outline" className="text-white/40 hover:text-white text-[11px] font-black uppercase tracking-widest border-white/10 hover:border-accent/40 hover:bg-accent/5" onClick={() => window.open('https://github.com')}>
-                  Open Documentation
-                </Button>
-                <Button variant="outline" className="text-white/40 hover:text-white text-[11px] font-black uppercase tracking-widest border-white/10 hover:border-accent/40 hover:bg-accent/5" onClick={() => window.open('https://github.com')}>
+                <Button
+                  variant="outline"
+                  className="text-white/40 hover:text-white text-[11px] font-black uppercase tracking-widest border-white/10 hover:border-accent/40 hover:bg-accent/5 gap-2"
+                  onClick={() => window.open('https://github.com/CJKaufman/ArrDeck')}
+                >
+                  <ExternalLink className="h-3.5 w-3.5" />
                   Source Repository
+                </Button>
+                <Button
+                  variant="outline"
+                  className="text-white/40 hover:text-white text-[11px] font-black uppercase tracking-widest border-white/10 hover:border-accent/40 hover:bg-accent/5 gap-2"
+                  onClick={() => window.open('https://github.com/CJKaufman/ArrDeck/issues')}
+                >
+                  <ExternalLink className="h-3.5 w-3.5" />
+                  Report a Bug
                 </Button>
               </div>
             </CardContent>

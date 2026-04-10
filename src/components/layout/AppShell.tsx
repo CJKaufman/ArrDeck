@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { Toaster } from '../ui/sonner';
 import { TransferStatsBar } from '../qbittorrent/TransferStatsBar';
 import { NotificationManager } from '../system/NotificationManager';
+import { UpdateBanner } from '../system/UpdateBanner';
 import { useShortcuts } from '../../hooks/useShortcuts';
 import { useWindowState } from '../../hooks/useWindowState';
 import { getCurrentWindow } from '@tauri-apps/api/window';
@@ -42,6 +43,7 @@ export function AppShell() {
     <div className="flex h-screen bg-background text-foreground overflow-hidden">
       <Sidebar />
       <div className="flex-1 flex flex-col min-w-0 relative">
+        <UpdateBanner />
         <main className="flex-1 overflow-y-auto bg-base relative transition-all duration-300 ease-in-out pb-12">
           <Outlet />
         </main>
