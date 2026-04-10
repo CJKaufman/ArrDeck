@@ -50,7 +50,22 @@ export function AppShell() {
         <TransferStatsBar />
         <NotificationManager />
       </div>
-      <Toaster theme={theme as any} />
+      <Toaster
+        theme={theme as any}
+        position="top-center"
+        toastOptions={{
+          style: {
+            background: '#111318',
+            border: '1px solid rgba(255,255,255,0.08)',
+            color: 'rgba(255,255,255,0.85)',
+            fontFamily: 'inherit',
+            fontSize: '11px',
+            fontWeight: '700',
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+          },
+        }}
+      />
     </div>
   );
 }

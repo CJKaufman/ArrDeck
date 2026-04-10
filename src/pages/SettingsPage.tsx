@@ -484,7 +484,18 @@ export function SettingsPage() {
                     <p className="text-[10px] text-white/30 mt-0.5">GitHub Releases · Stable</p>
                   </div>
                   <Button
-                    onClick={async () => { await manualCheck(); toast.info('Update check complete'); }}
+                    onClick={async () => {
+                      await manualCheck();
+                      // After manualCheck resolves, the 'update' state in useUpdater is updated
+                      // We use a short timeout so React re-renders before we read the state
+                      setTimeout(() => {
+                        if (update) {
+                          toast.success(`Update available — v${update.version}`);
+                        } else {
+                          toast.success("You're up to date");
+                        }
+                      }, 200);
+                    }}
                     disabled={isChecking || isDownloading || isInstalling}
                     variant="outline"
                     className="text-white/40 hover:text-white text-[10px] font-black uppercase tracking-widest border-white/10 hover:border-accent/40 hover:bg-accent/5 gap-2"
