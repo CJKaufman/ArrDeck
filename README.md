@@ -2,9 +2,9 @@
 
 # ⚡ ArrDeck
 
-### Mission Control for Your *Arr Media Stack
+### Mission Control for Your Arr Media Stack
 
-**A Windows desktop dashboard for Sonarr · Radarr · Prowlarr · qBittorrent**
+**A Windows desktop dashboard for Sonarr, Radarr, Prowlarr and qBittorrent**
 
 [![Release](https://img.shields.io/github/v/release/CJKaufman/ArrDeck?style=flat-square&color=00bcff&labelColor=0e0f11)](https://github.com/CJKaufman/ArrDeck/releases/latest)
 [![Stars](https://img.shields.io/github/stars/CJKaufman/ArrDeck?style=flat-square&color=00bcff&labelColor=0e0f11)](https://github.com/CJKaufman/ArrDeck/stargazers)
@@ -13,106 +13,104 @@
 
 <br />
 
-> 🚧 **Heavily in development.** A lot is still being added, fixed and refined. Feedback, ideas and criticism are very welcome — that's exactly why this is public.
+> 🚧 **Still heavily in development.** A lot is being added, fixed and refined. Feedback, ideas and criticism are very welcome, that's exactly why this is public.
 
 <br />
 
-[**→ View Landing Page**](https://cjkaufman.github.io/ArrDeck) &nbsp;·&nbsp; [**→ Download Latest**](https://github.com/CJKaufman/ArrDeck/releases/latest) &nbsp;·&nbsp; [**→ Report a Bug**](https://github.com/CJKaufman/ArrDeck/issues)
+[**View Landing Page**](https://cjkaufman.github.io/ArrDeck) &nbsp;·&nbsp; [**Download Latest**](https://github.com/CJKaufman/ArrDeck/releases/latest) &nbsp;·&nbsp; [**Report a Bug**](https://github.com/CJKaufman/ArrDeck/issues)
 
 </div>
 
 ---
 
-## 🤔 Why does this exist?
+## Why does this exist?
 
-If you run a self-hosted media stack you've probably noticed something: **on mobile you're sorted**. Android has NZB360. iOS has Lookupeer. Both give you a polished, unified interface for your entire *arr suite right in your pocket.
+If you run a self-hosted media stack you've probably noticed something: on mobile you're sorted. Android has NZB360, iOS has Lookupeer, and both give you a polished unified interface for your entire arr suite right in your pocket.
 
-**On Windows desktop? Nothing.** You're stuck juggling five browser tabs — one per service, each with their own UI language, each requiring its own login. It works, but it's not exactly elegant for something you interact with every day.
+On Windows desktop? Nothing. You're stuck juggling five browser tabs, one per service, each with its own UI and its own login. It works, but it's not exactly elegant for something you interact with every day.
 
-I couldn't find a native Windows app that solved this, so I decided to try building one myself. I'm not a professional developer — this is very much a **vibe coding project** — but it's been a great excuse to learn Tauri, sharpen my React skills, and end up with something I actually use daily.
+I couldn't find a native Windows app that solved this, so I decided to try building one myself. I'm not a professional developer and this is very much a vibe coding project, but it's been a great excuse to learn Tauri, sharpen my React skills, and end up with something I actually use daily.
 
-If you run a similar stack and want something better than browser tabs, give it a go. And if you have ideas, feature requests, or "this is completely wrong, here's why" feedback — [open an issue](https://github.com/CJKaufman/ArrDeck/issues). Seriously, I want to hear it.
-
----
-
-## 🚧 Current State
-
-This project is **actively in development**. Core features work, but there are rough edges, known bugs, and a lot still to be built. Do not expect a polished production app — yet.
-
-Things that currently work:
-- ✅ Unified dashboard with draggable, resizable widget grid
-- ✅ Sonarr & Radarr full library management (grid/list, detail drawer, bulk actions)
-- ✅ Prowlarr indexer health monitoring with animated status indicators
-- ✅ qBittorrent swarm management — torrents, speed controls, file tree, bulk ops
-- ✅ 6 switchable UI themes
-- ✅ Unified download queue across all services
-- ✅ Windows native toast notifications
-- ✅ Auto-update via GitHub Releases
-
-Things still being worked on:
-- 🔧 Layout stability at small window sizes
-- 🔧 Deeper Prowlarr stats and search integration
-- 🔧 Calendar refinements
-- 🔧 Complete settings persistence via Tauri store plugin
-- 🔧 Lidarr / Readarr support (architecture is pluggable, not yet wired)
-- 🔧 First-run onboarding flow
-- 🔧 General polish, error state handling, edge cases
+If you run a similar setup and want something better than browser tabs, give it a go. And if you have ideas, feature requests, or think something is completely wrong, [open an issue](https://github.com/CJKaufman/ArrDeck/issues). Seriously, I want to hear it.
 
 ---
 
-## ✨ Features
+## Current State
+
+This is actively being worked on. Core features work but there are rough edges, known bugs, and a lot still to be built. Don't go in expecting a polished finished product.
+
+What currently works:
+- Unified dashboard with a draggable, resizable widget grid
+- Sonarr and Radarr full library management with grid view, detail drawer and bulk actions
+- Prowlarr indexer health monitoring with animated status indicators
+- qBittorrent swarm management including torrents, speed controls, file tree and bulk ops
+- 6 switchable UI themes
+- Unified download queue across all services
+- Windows native toast notifications
+- Auto-update via GitHub Releases
+
+Still being worked on:
+- Layout stability at small window sizes
+- Deeper Prowlarr stats and search integration
+- Calendar refinements
+- Full settings persistence via Tauri store plugin
+- Lidarr and Readarr support (architecture is pluggable, just not wired yet)
+- First-run onboarding flow
+- General polish, error handling and edge cases
+
+---
+
+## Features
 
 | Feature | Description |
 |---|---|
 | **Unified Dashboard** | Service health, active downloads, upcoming releases and health alerts on one screen |
-| **Drag & Drop Grid** | Rearrange and resize every dashboard widget in edit mode — layout persists |
+| **Drag and Drop Grid** | Rearrange and resize every widget in edit mode, layout saves across restarts |
 | **Full Library Management** | Browse Sonarr series and Radarr movies with sort, filter, search and bulk actions |
-| **Prowlarr Health Rail** | Animated per-indexer status bars — green/amber/red with cinematic sweep animation |
-| **qBittorrent Swarm** | High-density torrent table, detail drawer with file tree, per-torrent speed limits |
-| **6 UI Themes** | Obsidian · Matrix · Void · Nebula · Glacier · Ghost |
-| **Native Performance** | ~35MB RAM at idle, <0.5s launch time. Tauri 2 using Edge WebView2 (no bundled Chromium) |
+| **Prowlarr Health Rail** | Animated per-indexer status bars in green, amber or red with a sweep animation |
+| **qBittorrent Swarm** | Dense torrent table, detail drawer with file tree, per-torrent speed limits |
+| **6 UI Themes** | Obsidian, Matrix, Void, Nebula, Glacier and Ghost |
+| **Native Performance** | Around 35MB RAM at idle, launches in under half a second. Tauri 2 with Edge WebView2 |
 | **Windows Notifications** | Native toast notifications for downloads, health warnings and connection events |
 
 ---
 
-## 🛠 Tech Stack
-
-Built with tools I wanted to learn properly:
+## Tech Stack
 
 | Layer | Tech |
 |---|---|
-| **Shell** | [Tauri 2](https://v2.tauri.app) — Rust-based native Windows wrapper |
+| **Shell** | [Tauri 2](https://v2.tauri.app) |
 | **Frontend** | React 19 + TypeScript + Vite 6 |
 | **Styling** | Tailwind CSS v4 + shadcn/ui |
-| **State** | Zustand 5 (UI/settings) + TanStack Query v5 (server state) |
-| **HTTP** | Axios — with cookie-jar support for qBittorrent's session auth |
+| **State** | Zustand 5 for UI and settings, TanStack Query v5 for server state |
+| **HTTP** | Axios with cookie-jar support for qBittorrent session auth |
 | **Charts** | Recharts |
 | **Icons** | Lucide React |
-| **Runtime** | Edge WebView2 (pre-installed on all modern Windows machines) |
+| **Runtime** | Edge WebView2, pre-installed on Windows 10 and 11 |
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Download
-Grab the latest `.exe` installer from [**Releases**](https://github.com/CJKaufman/ArrDeck/releases/latest) — no Node.js or Rust required to run it.
+Grab the latest `.exe` installer from [Releases](https://github.com/CJKaufman/ArrDeck/releases/latest). No Node.js or Rust needed to run it.
 
 ### Configure
-On first launch, go to **Settings** and enter your service URLs and API keys:
+On first launch go to Settings and enter your service URLs and API keys.
 
 | Service | Default Port | Where to find the API key |
 |---|---|---|
-| Sonarr | `8989` | Settings → General → Security |
-| Radarr | `7878` | Settings → General → Security |
-| Prowlarr | `9696` | Settings → General → Security |
-| qBittorrent | `8080` | Credentials you set in Web UI settings |
+| Sonarr | 8989 | Settings > General > Security |
+| Radarr | 7878 | Settings > General > Security |
+| Prowlarr | 9696 | Settings > General > Security |
+| qBittorrent | 8080 | Whatever credentials you set up in its web UI |
 
 ---
 
-## 🧑‍💻 Contributing / Running Locally
+## Running Locally
 
 ```bash
-# Prerequisites: Node.js 20+, Rust (stable), Edge WebView2 (pre-installed on Windows 10/11)
+# Needs: Node.js 20+, Rust stable, Edge WebView2 (already on Windows 10/11)
 
 git clone https://github.com/CJKaufman/ArrDeck.git
 cd ArrDeck
@@ -120,35 +118,33 @@ npm install
 npm run tauri dev
 ```
 
-The app hot-reloads on file save. Bug reports, feature ideas and pull requests are all welcome — just keep in mind this is a solo vibe-coding project so review cycles may be slow.
+The app hot-reloads on save. Bug reports, feature ideas and pull requests are welcome. Just keep in mind this is a solo side project so response times may vary.
 
 ---
 
-## 📋 Roadmap
+## Roadmap
 
-A rough priority list of what's coming:
-
-- [ ] Stable windowed-mode grid layout for all breakpoints
-- [ ] Full Prowlarr search and grab history integration  
+- [ ] Stable windowed-mode grid at all window sizes
+- [ ] Full Prowlarr search and grab history
 - [ ] Lidarr support
 - [ ] Readarr support
-- [ ] Settings onboarding flow for first-time setup
+- [ ] First-run onboarding flow
 - [ ] Auto-update UI with release notes
-- [ ] Poster image caching improvements
-- [ ] Keyboard shortcuts and power-user navigation
-- [ ] GitHub release pipeline refinement
+- [ ] Better poster image caching
+- [ ] Keyboard shortcuts
+- [ ] General build pipeline improvements
 
 ---
 
-## 📄 License
+## License
 
-MIT — use it, fork it, build on it.
+MIT. Use it, fork it, build on it.
 
 ---
 
 <div align="center">
 
-Made by [CJKaufman](https://github.com/CJKaufman) · Inspired by [NZB360](https://nzb360.com) · Built with [Tauri](https://v2.tauri.app)
+Made by [CJKaufman](https://github.com/CJKaufman). Inspired by [NZB360](https://nzb360.com). Built with [Tauri](https://v2.tauri.app).
 
 *Started because I couldn't find what I wanted. Finished when it's actually finished.*
 
