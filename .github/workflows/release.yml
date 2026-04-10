@@ -9,14 +9,7 @@ jobs:
   release:
     permissions:
       contents: write
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - platform: windows-latest
-            args: ''
-
-    runs-on: ${{ matrix.platform }}
+    runs-on: windows-latest
 
     steps:
       - name: Checkout
@@ -40,16 +33,117 @@ jobs:
       - name: Install frontend dependencies
         run: npm ci
 
-      - name: Build and release
-        uses: tauri-apps/tauri-action@v0
+      - name: Build Tauri app (with signing)
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+        run: npm run tauri build
+
+      - name: List build artifacts
+        run: |
+          Write-Host "=== All bundle artifacts ==="
+          Get-ChildItem "src-tauri/target/release/bundle" -Recurse | Select-Object FullName, Length
+          Write-Host ""
+          Write-Host "=== .sig files found ==="
+          $sigs = Get-ChildItem "src-tauri/target/release/bundle" -Recurse -Filter "*.sig"
+          if ($sigs) { $sigs | Select-Object FullName } else { Write-Host "NONE - signing did not produce .sig files" }
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/github-script@v7
         with:
-          tagName: ${{ github.ref_name }}
-          releaseName: ArrDeck ${{ github.ref_name }}
-          releaseBody: |
-            See the [changelog](https://github.com/CJKaufman/ArrDeck/commits/${{ github.ref_name }}) for details.
-          releaseDraft: false
-          prerelease: false
-          includeUpdaterJson: true
+          script: |
+            const tag = context.ref.replace('refs/tags/', '');
+            try {
+              const release = await github.rest.repos.createRelease({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                tag_name: tag,
+                name: `ArrDeck ${tag}`,
+                body: `See the [changelog](https://github.com/${context.repo.owner}/${context.repo.repo}/commits/${tag}) for details.`,
+                draft: false,
+                prerelease: false
+              });
+              console.log(`Created release: ${release.data.id}`);
+              return release.data.upload_url;
+            } catch(e) {
+              // Release may already exist - find it
+              const releases = await github.rest.repos.listReleases({
+                owner: context.repo.owner,
+                repo: context.repo.repo
+              });
+              const existing = releases.data.find(r => r.tag_name === tag);
+              if (existing) {
+                console.log(`Using existing release: ${existing.id}`);
+                return existing.upload_url;
+              }
+              throw e;
+            }
+
+      - name: Upload installers and signing artifacts
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $tag = "${{ github.ref_name }}"
+          $version = $tag -replace 'v', ''
+
+          # Upload NSIS installer
+          $nsis = Get-ChildItem "src-tauri/target/release/bundle/nsis" -Filter "*x64-setup.exe" -ErrorAction SilentlyContinue | Select-Object -First 1
+          if ($nsis) {
+            Write-Host "Uploading NSIS: $($nsis.FullName)"
+            gh release upload $tag $nsis.FullName --clobber
+          }
+
+          # Upload MSI installer
+          $msi = Get-ChildItem "src-tauri/target/release/bundle/msi" -Filter "*.msi" -ErrorAction SilentlyContinue | Select-Object -First 1
+          if ($msi) {
+            Write-Host "Uploading MSI: $($msi.FullName)"
+            gh release upload $tag $msi.FullName --clobber
+          }
+
+          # Upload .sig files
+          Get-ChildItem "src-tauri/target/release/bundle" -Recurse -Filter "*.sig" | ForEach-Object {
+            Write-Host "Uploading sig: $($_.FullName)"
+            gh release upload $tag $_.FullName --clobber
+          }
+
+      - name: Generate and upload latest.json
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $tag = "${{ github.ref_name }}"
+          $version = $tag -replace 'v', ''
+          $repo = "${{ github.repository }}"
+
+          # Find the NSIS .sig file
+          $sigFile = Get-ChildItem "src-tauri/target/release/bundle/nsis" -Filter "*x64-setup.exe.sig" -ErrorAction SilentlyContinue | Select-Object -First 1
+
+          if ($sigFile) {
+            Write-Host "Found sig file: $($sigFile.FullName)"
+            $signature = (Get-Content $sigFile.FullName -Raw).Trim()
+            $nsisName = $sigFile.Name -replace '\.sig$', ''
+            $url = "https://github.com/${repo}/releases/download/${tag}/${nsisName}"
+            $date = (Get-Date -Format "yyyy-MM-ddTHH:mm:ssZ")
+
+            $latestJson = [ordered]@{
+              version = $version
+              notes   = ""
+              pub_date = $date
+              platforms = [ordered]@{
+                "windows-x86_64" = [ordered]@{
+                  signature = $signature
+                  url       = $url
+                }
+              }
+            } | ConvertTo-Json -Depth 5
+
+            Write-Host "=== latest.json content ==="
+            Write-Host $latestJson
+
+            $latestJson | Out-File -FilePath "latest.json" -Encoding utf8NoBOM
+            gh release upload $tag latest.json --clobber
+            Write-Host "SUCCESS: latest.json uploaded to release ${tag}"
+          } else {
+            Write-Host "ERROR: No .sig file found - tauri signing failed"
+            Write-Host "Check that TAURI_SIGNING_PRIVATE_KEY is set correctly in GitHub Secrets"
+            exit 1
+          }
