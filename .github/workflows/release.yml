@@ -25,9 +25,9 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
-          cache-dependency-path: ArrDeck/package-lock.json
+          cache-dependency-path: package-lock.json
 
       - name: Setup Rust (stable)
         uses: dtolnay/rust-toolchain@stable
@@ -35,10 +35,9 @@ jobs:
       - name: Rust cache
         uses: swatinem/rust-cache@v2
         with:
-          workspaces: ArrDeck/src-tauri -> target
+          workspaces: src-tauri -> target
 
       - name: Install frontend dependencies
-        working-directory: ArrDeck
         run: npm ci
 
       - name: Build and release
@@ -48,7 +47,6 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
-          projectPath: ArrDeck
           tagName: ${{ github.ref_name }}
           releaseName: ArrDeck ${{ github.ref_name }}
           releaseBody: |
