@@ -1,10 +1,9 @@
-import { Download, X, RefreshCw, ArrowUpCircle, Zap } from 'lucide-react';
+import { Download, X, ArrowUpCircle, Zap } from 'lucide-react';
 import { useUpdater } from '../../hooks/useUpdater';
 
 export function UpdateBanner() {
   const {
     update,
-    isChecking,
     isDownloading,
     downloadProgress,
     isInstalling,
