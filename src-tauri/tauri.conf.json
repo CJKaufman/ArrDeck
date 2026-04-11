@@ -1,7 +1,7 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
   "productName": "ArrDeck",
-  "version": "0.3.6",
+  "version": "0.3.7",
   "identifier": "com.arrdeck.app",
   "build": {
     "beforeDevCommand": "npm run dev",
@@ -36,7 +36,7 @@
   },
   "plugins": {
     "updater": {
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDdCMURDREYyRDZBMEY3QkEKUldTNjk2RFc4czBkZTVFcWFpZnU4RVlqM3RHNEJLNnljcjZ2d25PNjQrVjZYelZnTXBFUjRuOXQK",
+      "pubkey": "RWS696DW8s0de5Eqaifu8EYj3tG4BK6ycr6vwnO64+V6XzVgMpER4n9t",
       "endpoints": [
         "https://github.com/CJKaufman/ArrDeck/releases/latest/download/latest.json"
       ],
