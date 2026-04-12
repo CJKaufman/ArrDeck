@@ -77,10 +77,10 @@ export function RadarrPage() {
   return (
     <div className="p-8 max-w-7xl mx-auto space-y-12 pb-24 animate-in fade-in duration-700">
       <div className="flex flex-col gap-2">
-        <h1 className="text-4xl font-black text-white tracking-tighter uppercase italic">
+        <h1 className="text-4xl font-black text-foreground tracking-tighter uppercase italic">
           Movie <span className="text-radarr underline decoration-4 underline-offset-4">Fleet</span>
         </h1>
-        <p className="text-white/60 font-medium tracking-tight italic uppercase text-[11px]">
+        <p className="text-muted-foreground font-medium tracking-tight italic uppercase text-[11px]">
           Global theatrical inventory and quality profile management
         </p>
       </div>

@@ -40,6 +40,7 @@ import { EfficiencyCard } from '../components/dashboard/EfficiencyCard';
 import { SecurityCard } from '../components/dashboard/SecurityCard';
 
 import { useDashboardStore } from '../stores/useDashboardStore';
+import { useSettingsStore } from '../stores/settings.store';
 import { Button } from '../components/ui/button';
 import {
   Dialog,
@@ -71,6 +72,8 @@ export function DashboardPage() {
     setEditMode, 
     resetLayout 
   } = useDashboardStore();
+
+  const { sonarr: sonarrConfig, radarr: radarrConfig, prowlarr: prowlarrConfig, qbittorrent: qbtConfig } = useSettingsStore();
 
   const [isCatalogOpen, setIsCatalogOpen] = useState(false);
 
@@ -168,10 +171,10 @@ export function DashboardPage() {
         {isStatCard ? (
           <StatCard {...(widgetProps as any)[id]} />
         ) : id === 'activity' ? (
-          <div className="bg-[#0B0C0E]/50 backdrop-blur-sm border border-white/5 rounded-2xl p-6 shadow-xl h-full flex flex-col group/tile">
+          <div className="bg-surface/50 backdrop-blur-sm border border-border rounded-2xl p-6 shadow-xl h-full flex flex-col group/tile">
              <div className="flex items-center justify-between mb-4 shrink-0">
-                <span className="text-[10px] uppercase font-black tracking-[0.2em] text-white/40 italic">30-Day Grabbing Heartbeat</span>
-                <ActivityIcon size={14} className="text-white/10 group-hover/tile:text-accent transition-colors" />
+                <span className="text-[10px] uppercase font-black tracking-[0.2em] text-muted-foreground italic">30-Day Grabbing Heartbeat</span>
+                <ActivityIcon size={14} className="text-muted-foreground/20 group-hover/tile:text-accent transition-colors" />
              </div>
              <div className="flex-1 min-h-0">
                 <ActivityChart data={activityData} />
@@ -226,13 +229,13 @@ export function DashboardPage() {
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div className="space-y-2 min-w-0 flex-1">
           <div className="flex items-center gap-3">
-            <h1 className="text-3xl md:text-5xl font-black text-white tracking-tighter uppercase italic">
-              Mission <span className="text-white/20">Control</span>
+            <h1 className="text-3xl md:text-5xl font-black text-foreground tracking-tighter uppercase italic">
+              Mission <span className="text-muted-foreground/30">Control</span>
             </h1>
             <div className={`h-2.5 w-2.5 rounded-full ${statusColor} animate-pulse shadow-[0_0_15px] ${allOperational ? 'shadow-status-ok' : 'shadow-status-error'}`} />
-            <span className="text-[10px] md:text-[12px] font-black text-white/50 tracking-[0.3em] uppercase italic">{statusText}</span>
+            <span className="text-[10px] md:text-[12px] font-black text-muted-foreground tracking-[0.3em] uppercase italic">{statusText}</span>
           </div>
-          <p className="text-white/60 font-medium tracking-tight italic uppercase text-[10px] md:text-[11px]">System state analytics and global fleet coordination bridge</p>
+          <p className="text-muted-foreground font-medium tracking-tight italic uppercase text-[10px] md:text-[11px]">System state analytics and global fleet coordination bridge</p>
         </div>
 
         <div className="flex items-center gap-3 shrink-0">
@@ -244,39 +247,39 @@ export function DashboardPage() {
                       <Plus className="h-4 w-4 mr-2" /> Add Module
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="bg-[#0B0C0E] border-white/10 text-white max-w-2xl sm:rounded-3xl shadow-2xl">
+                  <DialogContent className="bg-base border-border text-foreground max-w-2xl sm:rounded-3xl shadow-2xl">
                     <DialogHeader>
                       <DialogTitle className="text-2xl font-black uppercase italic tracking-tighter flex items-center gap-3">
                         <Gauge className="text-accent h-6 w-6" />
-                        Intelligence <span className="text-white/20">Catalog</span>
+                        Intelligence <span className="text-muted-foreground/20">Catalog</span>
                       </DialogTitle>
-                      <DialogDescription className="text-white/40 text-[10px] uppercase font-bold tracking-[0.2em] mt-1">
+                      <DialogDescription className="text-muted-foreground text-[10px] uppercase font-bold tracking-[0.2em] mt-1">
                         Select a module to commission into the operational grid
                       </DialogDescription>
                     </DialogHeader>
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4 py-8">
                       {availableWidgets.map(widget => (
                         <button key={widget.id} type="button" onClick={() => { toggleWidget(widget.id); setIsCatalogOpen(false); }}
-                          className="flex flex-col items-center justify-center p-6 bg-white/3 border border-white/5 rounded-2xl hover:bg-white/8 hover:border-accent/30 transition-all group gap-4 text-center">
-                          <div className={cn("p-3 rounded-xl bg-white/5 group-hover:scale-110 transition-transform", widget.color)}>
+                          className="flex flex-col items-center justify-center p-6 bg-surface/30 border border-border rounded-2xl hover:bg-surface/50 hover:border-accent/30 transition-all group gap-4 text-center">
+                          <div className={cn("p-3 rounded-xl bg-surface/20 group-hover:scale-110 transition-transform", widget.color)}>
                             <widget.icon className="h-6 w-6" />
                           </div>
-                          <span className="text-[11px] font-black uppercase italic tracking-tighter text-white/60 group-hover:text-white">{widget.label}</span>
+                          <span className="text-[11px] font-black uppercase italic tracking-tighter text-muted-foreground group-hover:text-foreground">{widget.label}</span>
                         </button>
                       ))}
                     </div>
                   </DialogContent>
                 </Dialog>
-                <Button variant="ghost" size="sm" onClick={resetLayout} className="text-white/40 hover:text-white">
+                <Button variant="ghost" size="sm" onClick={resetLayout} className="text-muted-foreground hover:text-foreground">
                   <RotateCcw className="h-4 w-4 mr-2" /> Reset
                 </Button>
              </div>
            )}
-           <Button variant={isEditMode ? "default" : "outline"} size="sm" onClick={() => setEditMode(!isEditMode)}
-            className={cn("transition-all duration-300 shrink-0", isEditMode ? "bg-accent text-white shadow-[0_0_15px_rgba(0,188,255,0.4)]" : "bg-white/5 border-white/10 text-white/60 hover:text-white transition-colors")}>
+            <Button variant={isEditMode ? "default" : "outline"} size="sm" onClick={() => setEditMode(!isEditMode)}
+            className={cn("transition-all duration-300 shrink-0", isEditMode ? "bg-accent text-white shadow-[0_0_15px_rgba(0,188,255,0.4)]" : "bg-surface border-border text-muted-foreground hover:text-foreground hover:bg-surface/80 transition-colors")}>
              {isEditMode ? <Lock className="h-4 w-4 mr-2" /> : <Unlock className="h-4 w-4 mr-2" />}
              <span className="hidden md:inline">{isEditMode ? "Lock Deck" : "Configure Deck"}</span>
-           </Button>
+            </Button>
         </div>
       </div>
       
@@ -284,41 +287,46 @@ export function DashboardPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
         <div className="col-span-1 md:col-span-12 lg:col-span-9 space-y-4">
-           <div className="flex items-center justify-between px-1">
-             <h2 className="text-xl font-black text-white uppercase tracking-tighter italic">Service <span className="text-accent/60">Bridge</span></h2>
-             <span className="text-[10px] font-black uppercase tracking-widest text-white/40 hidden sm:inline">Telemetry Recovered</span>
-           </div>
-           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
-             <ServiceStatusCard name="Sonarr" query={sonarr} colorClass="border-sonarr" />
-             <ServiceStatusCard name="Radarr" query={radarr} colorClass="border-radarr" />
-             <ServiceStatusCard name="Prowlarr" query={prowlarr} colorClass="border-prowlarr" />
-             <ServiceStatusCard name="qBittorrent" query={qbittorrent} colorClass="border-accent" />
-           </div>
+            <div className="flex items-center justify-between px-1">
+              <h2 className="text-xl font-black text-foreground uppercase tracking-tighter italic">Service <span className="text-accent/60">Bridge</span></h2>
+              <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground hidden sm:inline">Telemetry Recovered</span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+              {sonarrConfig.enabled && <ServiceStatusCard name="Sonarr" query={sonarr} colorClass="border-sonarr" />}
+              {radarrConfig.enabled && <ServiceStatusCard name="Radarr" query={radarr} colorClass="border-radarr" />}
+              {prowlarrConfig.enabled && <ServiceStatusCard name="Prowlarr" query={prowlarr} colorClass="border-prowlarr" />}
+              {qbtConfig.enabled && <ServiceStatusCard name="qBittorrent" query={qbittorrent} colorClass="border-accent" />}
+              {!sonarrConfig.enabled && !radarrConfig.enabled && !prowlarrConfig.enabled && !qbtConfig.enabled && (
+                <div className="col-span-full py-12 text-center text-muted-foreground/30 italic font-black uppercase tracking-widest text-xs border border-dashed border-border rounded-2xl">
+                   No services active. Commission nodes in Terminal Settings.
+                </div>
+              )}
+            </div>
         </div>
         <div className="col-span-1 md:col-span-12 lg:col-span-3 space-y-4">
            <div className="flex items-center justify-between px-1">
              <h2 className="text-xl font-black text-white uppercase tracking-tighter italic text-white/40">Logistics</h2>
            </div>
            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
-              <div className="bg-[#0B0C0E]/50 backdrop-blur-sm border border-white/5 rounded-2xl p-6 flex flex-col justify-center gap-1 group cursor-pointer hover:border-white/10 transition-colors shadow-xl">
-                <span className="text-[10px] uppercase font-black tracking-[0.2em] text-white/40 group-hover:text-accent transition-colors">Transfer Queue</span>
+              <div className="bg-surface/50 backdrop-blur-sm border border-border rounded-2xl p-6 flex flex-col justify-center gap-1 group cursor-pointer hover:border-border/60 transition-colors shadow-xl">
+                <span className="text-[10px] uppercase font-black tracking-[0.2em] text-muted-foreground group-hover:text-accent transition-colors uppercase italic tracking-tighter">Transfer Queue</span>
                 <div className="flex items-center justify-between">
-                  <span className="text-lg font-black text-white group-hover:text-white transition-colors uppercase italic tracking-tighter">View Tasks</span>
-                  <DownloadCloud className="h-5 w-5 text-white/20 group-hover:text-accent transition-colors" />
+                  <span className="text-lg font-black text-foreground group-hover:text-foreground transition-colors uppercase italic tracking-tighter">View Tasks</span>
+                  <DownloadCloud className="h-5 w-5 text-muted-foreground/20 group-hover:text-accent transition-colors" />
                 </div>
               </div>
-              <div className="bg-[#0B0C0E]/50 backdrop-blur-sm border border-white/5 rounded-2xl p-6 flex flex-col justify-center gap-1 group cursor-pointer hover:border-white/10 transition-colors shadow-xl">
-                <span className="text-[10px] uppercase font-black tracking-[0.2em] text-white/40 group-hover:text-prowlarr transition-colors">Global Search</span>
+              <div className="bg-surface/50 backdrop-blur-sm border border-border rounded-2xl p-6 flex flex-col justify-center gap-1 group cursor-pointer hover:border-border/60 transition-colors shadow-xl">
+                <span className="text-[10px] uppercase font-black tracking-[0.2em] text-muted-foreground group-hover:text-prowlarr transition-colors uppercase italic tracking-tighter">Global Search</span>
                 <div className="flex items-center justify-between">
-                  <span className="text-lg font-black text-white group-hover:text-white transition-colors uppercase italic tracking-tighter">Aggregated</span>
-                  <LinkIcon className="h-5 w-5 text-white/20 group-hover:text-prowlarr transition-colors" />
+                  <span className="text-lg font-black text-foreground group-hover:text-foreground transition-colors uppercase italic tracking-tighter">Aggregated</span>
+                  <LinkIcon className="h-5 w-5 text-muted-foreground/20 group-hover:text-prowlarr transition-colors" />
                 </div>
               </div>
            </div>
         </div>
       </div>
 
-      <div className={cn("relative transition-all duration-500 min-h-[500px] rounded-3xl", isEditMode && "bg-[#0B0C0E]/30 bg-grid-dots ring-1 ring-white/10 p-6 shadow-2xl deck-edit-active")}>
+      <div className={cn("relative transition-all duration-500 min-h-[500px] rounded-3xl", isEditMode && "bg-surface/30 bg-grid-dots ring-1 ring-border p-6 shadow-2xl deck-edit-active")}>
         {isEditMode && (
           <div className="absolute top-6 left-6 z-50 animate-in fade-in slide-in-from-top-2 duration-500 flex items-center gap-3">
              <span className="text-[9px] font-black uppercase tracking-[0.3em] text-accent bg-accent/10 px-4 py-2 rounded-full border border-accent/20 shadow-[0_0_15px_rgba(0,188,255,0.2)]">Operational Deck Unlocked</span>
@@ -346,7 +354,7 @@ export function DashboardPage() {
           </ResponsiveGridLayout>
         ) : (
           <div className="h-full w-full flex items-center justify-center min-h-[400px]">
-            <div className="flex flex-col items-center gap-4 text-white/20 animate-pulse">
+            <div className="flex flex-col items-center gap-4 text-muted-foreground/30 animate-pulse">
               <Boxes className="h-12 w-12" />
               <span className="text-[10px] uppercase font-black tracking-[0.3em]">Grid Handshake in Progress...</span>
             </div>

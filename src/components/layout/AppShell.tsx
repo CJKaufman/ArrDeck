@@ -9,9 +9,10 @@ import { UpdateBanner } from '../system/UpdateBanner';
 import { useShortcuts } from '../../hooks/useShortcuts';
 import { useWindowState } from '../../hooks/useWindowState';
 import { getCurrentWindow } from '@tauri-apps/api/window';
+import { OnboardingFlow } from '../onboarding/OnboardingFlow';
 
 export function AppShell() {
-  const { theme } = useSettingsStore();
+  const { theme, isOnboarded } = useSettingsStore();
   const location = useLocation();
   useShortcuts();
   useWindowState();
@@ -39,8 +40,12 @@ export function AppShell() {
     }
   }, [location]);
 
+  if (!isOnboarded) {
+    return <OnboardingFlow />;
+  }
+
   return (
-    <div className="flex h-screen bg-background text-foreground overflow-hidden">
+    <div className="flex h-screen bg-base text-foreground overflow-hidden">
       <Sidebar />
       <div className="flex-1 flex flex-col min-w-0 relative">
         <UpdateBanner />
@@ -54,16 +59,7 @@ export function AppShell() {
         theme={theme as any}
         position="top-center"
         toastOptions={{
-          style: {
-            background: '#111318',
-            border: '1px solid rgba(255,255,255,0.08)',
-            color: 'rgba(255,255,255,0.85)',
-            fontFamily: 'inherit',
-            fontSize: '11px',
-            fontWeight: '700',
-            letterSpacing: '0.08em',
-            textTransform: 'uppercase',
-          },
+          className: "bg-surface border-border text-foreground font-black uppercase tracking-widest text-[10px]",
         }}
       />
     </div>

@@ -40,54 +40,52 @@ export function ServiceStatusCard({ name, query, colorClass }: ServiceStatusCard
   const nameColor = colorClass.replace('border-', 'text-');
 
   return (
-    <div className={`bg-[#16171a] border border-white/5 rounded-2xl p-5 relative overflow-hidden group hover:border-white/10 transition-all shadow-xl`}>
+    <div className={`bg-surface/50 border border-border rounded-2xl p-5 relative overflow-hidden group hover:border-border/60 transition-all shadow-xl`}>
        {/* Background Watermark/Glow */}
-       <div className={`absolute -top-12 -right-12 w-24 h-24 blur-3xl opacity-5 transition-opacity group-hover:opacity-10 ${statusColor}`} />
+       <div className={`absolute -top-12 -right-12 w-24 h-24 blur-3xl opacity-10 transition-opacity group-hover:opacity-20 ${statusColor}`} />
 
        {/* Header: Service Identity Block */}
        <div className="flex items-start justify-between mb-5">
           <div className="flex flex-col gap-0.5">
-             <div className="flex items-center gap-2.5">
-                <div className="flex items-center justify-center p-1.5 bg-black/40 rounded-lg border border-white/5 shadow-inner">
-                   <Cpu className={`h-3.5 w-3.5 ${isOperational ? nameColor : 'text-white/10'}`} />
-                </div>
-                <h3 className={`font-black tracking-tighter uppercase italic text-[13px] ${nameColor}`}>{name}</h3>
-             </div>
-             
-             <div className="flex items-center gap-2.5 pl-1.5 h-5">
-                <div className="relative flex h-2 w-2">
-                   <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${statusColor}`}></span>
-                   <span className={`relative inline-flex rounded-full h-2 w-2 ${statusColor}`}></span>
-                </div>
-                <span className={`text-[10px] font-black tracking-[0.3em] uppercase ${statusText === 'OFFLINE' ? 'text-status-error' : 'text-white/50'}`}>
-                   {statusText}
-                </span>
-             </div>
+              <div className="flex items-center gap-2.5">
+                 <div className="flex items-center justify-center p-1.5 bg-base/50 rounded-lg border border-border shadow-inner">
+                    <Cpu className={`h-3.5 w-3.5 ${isOperational ? nameColor : 'text-muted-foreground/20'}`} />
+                 </div>
+                 <h3 className={`font-black tracking-tighter uppercase italic text-[13px] ${nameColor}`}>{name}</h3>
+              </div>
+                          <div className="flex items-center gap-2.5 pl-1.5 h-5">
+                 <div className="relative flex h-2 w-2">
+                    <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${statusColor}`}></span>
+                    <span className={`relative inline-flex rounded-full h-2 w-2 ${statusColor}`}></span>
+                 </div>
+                 <span className={`text-[10px] font-black tracking-[0.3em] uppercase ${statusText === 'OFFLINE' ? 'text-status-error' : 'text-muted-foreground'}`}>
+                    {statusText}
+                 </span>
+              </div>
           </div>
-          
-          <div className="mt-1">
-             <div className={`h-1.5 w-6 rounded-full ${isOperational ? 'bg-white/10' : 'bg-status-error/10'} border border-white/5 opacity-40 shadow-inner`} />
-          </div>
+                    <div className="mt-1">
+              <div className={`h-1.5 w-6 rounded-full ${isOperational ? 'bg-foreground/5' : 'bg-status-error/10'} border border-border opacity-40 shadow-inner`} />
+           </div>
        </div>
 
        {/* Divider */}
        <div className="h-[1px] w-full bg-white/5 mb-6" />
 
-       {/* Metrics Wall */}
-       <div className="grid grid-cols-2 gap-3">
-          <div className="bg-black/40 rounded-xl py-3 px-2 border border-white/5 flex flex-col items-center justify-center gap-1 shadow-inner hover:bg-black/20 transition-colors group/gauge overflow-hidden">
-             <span className="text-[8px] uppercase font-black tracking-[0.2em] text-white/30 group-hover/gauge:text-white/50 transition-colors">Version</span>
-             <span className="text-[10px] font-black font-mono text-white/90 whitespace-nowrap tracking-tighter">
-                {data?.status?.version || (isLoading ? '---' : 'UNKNOWN')}
-             </span>
-          </div>
-          <div className="bg-black/40 rounded-xl py-3 px-2 border border-white/5 flex flex-col items-center justify-center gap-1 shadow-inner hover:bg-black/20 transition-colors group/gauge overflow-hidden">
-             <span className="text-[8px] uppercase font-black tracking-[0.2em] text-white/30 group-hover/gauge:text-white/50 transition-colors">Response</span>
-             <span className={`text-[10px] font-black font-mono tracking-tighter ${isOperational ? 'text-status-ok' : 'text-status-error'}`}>
-                {isFetching ? 'PULSING' : (isError ? 'TIMEOUT' : 'STABLE')}
-             </span>
-          </div>
-       </div>
+        {/* Metrics Wall */}
+        <div className="grid grid-cols-2 gap-3">
+           <div className="bg-base/50 rounded-xl py-3 px-2 border border-border flex flex-col items-center justify-center gap-1 shadow-inner hover:bg-base/30 transition-colors group/gauge overflow-hidden">
+              <span className="text-[8px] uppercase font-black tracking-[0.2em] text-muted-foreground/60 group-hover/gauge:text-muted-foreground transition-colors uppercase italic tracking-tighter">Version</span>
+              <span className="text-[10px] font-black font-mono text-foreground whitespace-nowrap tracking-tighter italic">
+                 {data?.status?.version || (isLoading ? '---' : 'UNKNOWN')}
+              </span>
+           </div>
+           <div className="bg-base/50 rounded-xl py-3 px-2 border border-border flex flex-col items-center justify-center gap-1 shadow-inner hover:bg-base/30 transition-colors group/gauge overflow-hidden">
+              <span className="text-[8px] uppercase font-black tracking-[0.2em] text-muted-foreground/60 group-hover/gauge:text-muted-foreground transition-colors uppercase italic tracking-tighter">Response</span>
+              <span className={`text-[10px] font-black font-mono tracking-tighter italic ${isOperational ? 'text-status-ok' : 'text-status-error'}`}>
+                 {isFetching ? 'PULSING' : (isError ? 'TIMEOUT' : 'STABLE')}
+              </span>
+           </div>
+        </div>
 
        {/* Error Message if any */}
        {isError && (

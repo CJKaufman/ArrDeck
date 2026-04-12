@@ -23,12 +23,14 @@ export interface SettingsState {
   queueRefreshMs: number;
   posterSize: 'small' | 'medium' | 'large';
   defaultView: 'grid' | 'list';
+  isOnboarded: boolean;
   // Actions
   updateSonarr: (config: Partial<ServiceConfig>) => void;
   updateRadarr: (config: Partial<ServiceConfig>) => void;
   updateProwlarr: (config: Partial<ServiceConfig>) => void;
   updateQBittorrent: (config: { enabled?: boolean; baseUrl?: string; username?: string; password?: string }) => void;
   updateSetting: <K extends keyof SettingsState>(key: K, value: SettingsState[K]) => void;
+  setIsOnboarded: (val: boolean) => void;
 }
 
 const defaultServiceConfig: ServiceConfig = {
@@ -49,12 +51,13 @@ export const useSettingsStore = create<SettingsState>()(
         username: '',
         password: '',
       },
-      theme: 'dark',
+      theme: 'matrix',
       startupPage: '/',
       dashboardRefreshMs: 60000,
       queueRefreshMs: 15000,
       posterSize: 'medium',
       defaultView: 'grid',
+      isOnboarded: false,
 
       updateSonarr: (config) =>
         set((state) => ({ sonarr: { ...state.sonarr, ...config } })),
@@ -64,7 +67,8 @@ export const useSettingsStore = create<SettingsState>()(
         set((state) => ({ prowlarr: { ...state.prowlarr, ...config } })),
       updateQBittorrent: (config) =>
         set((state) => ({ qbittorrent: { ...state.qbittorrent, ...config } })),
-      updateSetting: (key, value) => set({ [key]: value }),
+      updateSetting: (key, value) => set({ [key]: value } as any),
+      setIsOnboarded: (val) => set({ isOnboarded: val }),
     }),
     {
       name: 'arrdeck-settings',

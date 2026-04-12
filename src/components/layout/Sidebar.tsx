@@ -13,23 +13,25 @@ import {
 } from 'lucide-react';
 import { useUnifiedQueue } from '../../hooks/useUnifiedQueue';
 import { useUIStore } from '../../stores/ui.store';
+import { useSettingsStore } from '../../stores/settings.store';
 
 export function Sidebar() {
   const { count } = useUnifiedQueue();
   const { isSidebarCollapsed, toggleSidebar } = useUIStore();
+  const { sonarr, radarr, prowlarr, qbittorrent } = useSettingsStore();
 
   const navItems = [
     { to: '/', icon: LayoutDashboard, label: 'Dashboard' },
     { to: '/queue', icon: ListTree, label: 'Queue', count },
     { to: '/search', icon: Search, label: 'Search' },
-    { to: '/qbittorrent', icon: Download, label: 'qBittorrent', color: 'text-qbittorrent' },
-  ];
+    { to: '/qbittorrent', icon: Download, label: 'qBittorrent', color: 'text-qbittorrent', enabled: qbittorrent.enabled },
+  ].filter(item => item.enabled !== false);
 
   const appItems = [
-    { to: '/sonarr', icon: Tv, label: 'Sonarr', color: 'text-sonarr' },
-    { to: '/radarr', icon: Film, label: 'Radarr', color: 'text-radarr' },
-    { to: '/prowlarr', icon: LinkIcon, label: 'Prowlarr', color: 'text-prowlarr' },
-  ];
+    { to: '/sonarr', icon: Tv, label: 'Sonarr', color: 'text-sonarr', enabled: sonarr.enabled },
+    { to: '/radarr', icon: Film, label: 'Radarr', color: 'text-radarr', enabled: radarr.enabled },
+    { to: '/prowlarr', icon: LinkIcon, label: 'Prowlarr', color: 'text-prowlarr', enabled: prowlarr.enabled },
+  ].filter(item => item.enabled !== false);
 
   return (
     <aside className={`${isSidebarCollapsed ? 'w-20' : 'w-64'} bg-sidebar border-r border-border h-full flex flex-col transition-all duration-300 ease-in-out supports-[height:100vh]:h-[100vh] relative z-50 shadow-2xl overflow-hidden`}>
@@ -77,12 +79,14 @@ export function Sidebar() {
         </ul>
 
         {/* Deployment Section */}
-        <div className="px-3">
-           <div className={`h-[1px] w-full bg-white/5 ${isSidebarCollapsed ? '' : 'mb-6'}`} />
-           {!isSidebarCollapsed && (
-             <span className="text-[11px] uppercase font-black tracking-widest text-white/50 mb-4 block italic animate-in fade-in duration-500">Deployment</span>
-           )}
-        </div>
+        {appItems.length > 0 && (
+          <div className="px-3">
+             <div className={`h-[1px] w-full bg-white/5 ${isSidebarCollapsed ? '' : 'mb-6'}`} />
+             {!isSidebarCollapsed && (
+               <span className="text-[11px] uppercase font-black tracking-widest text-white/50 mb-4 block italic animate-in fade-in duration-500">Deployment</span>
+             )}
+          </div>
+        )}
 
         <ul className="space-y-1">
           {appItems.map((item) => (
