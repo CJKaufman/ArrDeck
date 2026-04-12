@@ -36,7 +36,7 @@
   },
   "plugins": {
     "updater": {
-      "pubkey": "RWS696DW8s0de5Eqaifu8EYj3tG4BK6ycr6vwnO64+V6XzVgMpER4n9t",
+      "pubkey": "RWR6fAITKtHahvkm+cgHTxm05R97bH75E6e6L3pBp+bWgVG+DOOwDflt",
       "endpoints": [
         "https://github.com/CJKaufman/ArrDeck/releases/latest/download/latest.json"
       ],
