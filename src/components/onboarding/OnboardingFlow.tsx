@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { 
-  Zap, 
   Cpu, 
   Shield, 
   Tv, 
@@ -10,11 +9,9 @@ import {
   Check, 
   ChevronRight, 
   ChevronLeft, 
-  Activity,
-  Terminal,
-  Grid3X3,
-  Palette,
-  Power
+  Activity, 
+  Terminal, 
+  Power 
 } from 'lucide-react';
 import { useSettingsStore } from '../../stores/settings.store';
 import { Button } from '../ui/button';
