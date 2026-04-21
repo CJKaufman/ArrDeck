@@ -347,7 +347,7 @@ export function OnboardingFlow() {
       </div>
       
       <div className="absolute bottom-6 right-8 text-muted-foreground/30">
-         <span className="text-[8px] font-black uppercase tracking-[0.3em]">ARRDECK VERSION 0.1.0 // INITIAL INDUCTION</span>
+         <span className="text-[8px] font-black uppercase tracking-[0.3em]">ARRDECK VERSION {import.meta.env.VITE_APP_VERSION} // INITIAL INDUCTION</span>
       </div>
     </div>
   );

@@ -42,7 +42,7 @@ export function SettingsPage() {
   const { update, isChecking, isDownloading, downloadProgress, isInstalling, manualCheck, installUpdate } = useUpdater();
 
   useEffect(() => {
-    getVersion().catch(() => '0.1.0').then(setAppVersion);
+    setAppVersion(import.meta.env.VITE_APP_VERSION);
   }, []);
 
   const themes = [
