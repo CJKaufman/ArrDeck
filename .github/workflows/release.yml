@@ -40,11 +40,16 @@ jobs:
       - name: Install frontend dependencies
         run: npm ci
 
+      - name: Create Private Key File
+        shell: bash
+        run: |
+          echo "${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}" > src-tauri/updater_key
+
       - name: Build and release
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PATH: src-tauri/updater_key
         with:
           tagName: ${{ github.ref_name }}
           releaseName: ArrDeck ${{ github.ref_name }}
