@@ -48,7 +48,7 @@ jobs:
         with:
           tagName: ${{ github.ref_name }}
           releaseName: ArrDeck ${{ github.ref_name }}
-          tauriScript: node build-wrapper.js
+          tauriScript: node build-wrapper.cjs
           releaseBody: |
             See the [changelog](https://github.com/CJKaufman/ArrDeck/commits/${{ github.ref_name }}) for details.
           releaseDraft: false
