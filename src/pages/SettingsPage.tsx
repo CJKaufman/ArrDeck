@@ -25,7 +25,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs'
 import { cn } from '../lib/utils';
 import { Check, Palette, Monitor, Layers, RefreshCw, Download, ExternalLink } from 'lucide-react';
 import { useUpdater } from '../hooks/useUpdater';
-import { getVersion } from '@tauri-apps/api/app';
 
 export function SettingsPage() {
   const {
