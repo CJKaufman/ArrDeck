@@ -12,6 +12,7 @@
     "shell:default",
     "updater:default",
     "process:default",
+    "window-state:default",
     {
       "identifier": "http:allow-fetch",
       "allow": [

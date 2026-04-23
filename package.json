@@ -1,7 +1,7 @@
 {
   "name": "arrdeck",
   "private": true,
-  "version": "0.3.28",
+  "version": "0.3.29",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -22,6 +22,7 @@
     "@tauri-apps/plugin-shell": "^2.3.5",
     "@tauri-apps/plugin-store": "^2.4.2",
     "@tauri-apps/plugin-updater": "^2.10.1",
+    "@tauri-apps/plugin-window-state": "^2.4.1",
     "@types/react-grid-layout": "^1.3.6",
     "axios": "^1.14.0",
     "class-variance-authority": "^0.7.1",

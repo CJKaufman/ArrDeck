@@ -224,7 +224,7 @@ export function DashboardPage() {
   const availableWidgets = allPossibleWidgets.filter(w => !visibleWidgets.includes(w.id));
 
   return (
-    <div className="space-y-12 pb-24 max-w-[1600px] mx-auto animate-in fade-in slide-in-from-bottom-4 duration-1000 px-4 md:px-8">
+    <div className="space-y-12 pt-8 md:pt-12 pb-24 max-w-[1600px] mx-auto animate-in fade-in slide-in-from-bottom-4 duration-1000 px-4 md:px-8">
       {/* Top Section */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div className="space-y-2 min-w-0 flex-1">
