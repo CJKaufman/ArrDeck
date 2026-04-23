@@ -3,6 +3,7 @@ import type { Update } from '@tauri-apps/plugin-updater';
 
 export interface UpdaterState {
   isChecking: boolean;
+  hasChecked: boolean;
   update: Update | null;
   isDownloading: boolean;
   downloadProgress: number;
@@ -22,6 +23,7 @@ const UpdaterContext = createContext<UpdaterContextType | null>(null);
 export function UpdaterProvider({ children }: { children: ReactNode }): JSX.Element {
   const [state, setState] = useState<UpdaterState>({
     isChecking: false,
+    hasChecked: false,
     update: null,
     isDownloading: false,
     downloadProgress: 0,
@@ -39,7 +41,7 @@ export function UpdaterProvider({ children }: { children: ReactNode }): JSX.Elem
       // Dynamic import to avoid breaking browser/dev builds
       const { check } = await import('@tauri-apps/plugin-updater');
       const update = await check();
-      setState(s => ({ ...s, isChecking: false, update: update ?? null }));
+      setState(s => ({ ...s, isChecking: false, hasChecked: true, update: update ?? null }));
     } catch (err: any) {
       // Endpoint missing (404) or network error — swallow silently
       setState(s => ({ ...s, isChecking: false, error: null }));

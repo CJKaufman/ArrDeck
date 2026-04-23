@@ -124,7 +124,7 @@ export function OnboardingFlow() {
             </div>
 
             <div className="flex flex-col md:flex-row items-center gap-6">
-              <Button size="lg" onClick={nextStep} className="w-full md:w-auto px-12 h-16 bg-accent hover:bg-accent/90 text-white font-black italic uppercase tracking-widest text-lg group rounded-2xl shadow-[0_0_30px_rgba(0,188,255,0.3)] transition-all hover:scale-105 active:scale-95">
+              <Button size="lg" onClick={nextStep} className="w-full md:w-auto px-12 h-16 bg-accent hover:bg-accent/90 text-foreground font-black italic uppercase tracking-widest text-lg group rounded-2xl shadow-[0_0_30px_rgba(0,188,255,0.3)] transition-all hover:scale-105 active:scale-95">
                 Initialize Fleet <ChevronRight className="ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
               <Button variant="ghost" onClick={handleSkip} className="text-muted-foreground hover:text-foreground font-black uppercase tracking-widest italic text-xs hover:bg-surface group">
@@ -152,7 +152,7 @@ export function OnboardingFlow() {
                      onClick={() => svc.update(!svc.enabled)}>
                    <CardContent className="p-6 flex items-center justify-between">
                      <div className="flex items-center gap-5">
-                        <div className={cn("p-4 rounded-2xl bg-white/5 group-hover:scale-110 transition-transform", svc.enabled && svc.color)}>
+                        <div className={cn("p-4 rounded-2xl bg-foreground/5 group-hover:scale-110 transition-transform", svc.enabled && svc.color)}>
                           <svc.icon size={28} />
                         </div>
                         <div className="space-y-1">
@@ -170,7 +170,7 @@ export function OnboardingFlow() {
                 <Button variant="ghost" onClick={prevStep} className="text-muted-foreground hover:text-foreground uppercase font-black italic tracking-widest">
                    <ChevronLeft className="mr-2 h-4 w-4" /> Go Back
                 </Button>
-                <Button onClick={nextStep} className="h-14 px-10 bg-accent hover:bg-accent/90 text-white font-black italic uppercase tracking-widest rounded-xl shadow-xl transition-all hover:scale-105 active:scale-95">
+                <Button onClick={nextStep} className="h-14 px-10 bg-accent hover:bg-accent/90 text-foreground font-black italic uppercase tracking-widest rounded-xl shadow-xl transition-all hover:scale-105 active:scale-95">
                    Next Protocol
                 </Button>
              </div>
@@ -248,7 +248,7 @@ export function OnboardingFlow() {
                   <Button variant="ghost" onClick={nextStep} className="text-muted-foreground hover:text-foreground uppercase font-black italic tracking-widest text-[10px]">
                      Set up later
                   </Button>
-                  <Button onClick={nextStep} className="h-14 px-10 bg-accent hover:bg-accent/90 text-white font-black italic uppercase tracking-widest rounded-xl shadow-xl transition-all hover:scale-105 active:scale-95">
+                  <Button onClick={nextStep} className="h-14 px-10 bg-accent hover:bg-accent/90 text-foreground font-black italic uppercase tracking-widest rounded-xl shadow-xl transition-all hover:scale-105 active:scale-95">
                      Connect Fleet
                   </Button>
                 </div>
@@ -275,7 +275,7 @@ export function OnboardingFlow() {
                   <button key={t.id} onClick={() => updateSetting('theme', t.id as any)}
                     className={cn("p-4 border rounded-2xl transition-all flex flex-col items-center gap-3 relative overflow-hidden group hover:scale-[1.02]", theme === t.id ? "bg-surface border-accent shadow-[0_0_20px_rgba(0,180,216,0.1)]" : "bg-surface/40 border-border hover:border-border/60")}>
                     {theme === t.id && (
-                      <div className="absolute top-2 right-2 bg-accent text-white p-1 rounded-full"><Check size={8} /></div>
+                      <div className="absolute top-2 right-2 bg-accent text-foreground p-1 rounded-full"><Check size={8} /></div>
                     )}
                     <div className="w-full h-12 rounded-lg border border-border flex gap-1 overflow-hidden">
                        <div className="flex-1" style={{ backgroundColor: t.bg }} />
@@ -290,7 +290,7 @@ export function OnboardingFlow() {
                 <Button variant="ghost" onClick={prevStep} className="text-muted-foreground hover:text-foreground uppercase font-black italic tracking-widest">
                    <ChevronLeft className="mr-2 h-4 w-4" /> Go Back
                 </Button>
-                <Button onClick={nextStep} className="h-14 px-10 bg-accent hover:bg-accent/90 text-white font-black italic uppercase tracking-widest rounded-xl shadow-xl transition-all hover:scale-105 active:scale-95">
+                <Button onClick={nextStep} className="h-14 px-10 bg-accent hover:bg-accent/90 text-foreground font-black italic uppercase tracking-widest rounded-xl shadow-xl transition-all hover:scale-105 active:scale-95">
                    Confirm Protocol
                 </Button>
              </div>
@@ -325,7 +325,7 @@ export function OnboardingFlow() {
                 </div>
              </div>
 
-             <Button size="lg" onClick={finalize} disabled={loading} className="w-full max-w-sm h-16 bg-accent hover:bg-accent/90 text-white font-black italic uppercase tracking-widest text-lg group rounded-2xl shadow-[0_0_30px_rgba(0,188,255,0.3)] transition-all hover:scale-105 active:scale-95">
+             <Button size="lg" onClick={finalize} disabled={loading} className="w-full max-w-sm h-16 bg-accent hover:bg-accent/90 text-foreground font-black italic uppercase tracking-widest text-lg group rounded-2xl shadow-[0_0_30px_rgba(0,188,255,0.3)] transition-all hover:scale-105 active:scale-95">
                 {loading ? 'Booting...' : 'Enter Mission Control'} <Power className="ml-2 h-5 w-5" />
               </Button>
           </div>

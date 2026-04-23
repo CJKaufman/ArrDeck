@@ -108,34 +108,34 @@ export function SettingsPage() {
   return (
     <div className="p-8 max-w-7xl mx-auto space-y-12 pb-24 animate-in fade-in duration-700">
       <div className="flex flex-col gap-2">
-        <h1 className="text-4xl font-black text-white tracking-tighter uppercase italic">
+        <h1 className="text-4xl font-black text-foreground tracking-tighter uppercase italic">
           System <span className="text-accent underline decoration-4 underline-offset-4">Terminal</span>
         </h1>
-        <p className="text-white/60 font-medium tracking-tight italic uppercase text-[11px]">
+        <p className="text-foreground/60 font-medium tracking-tight italic uppercase text-[11px]">
           Central configuration and thematic bridge
         </p>
       </div>
 
       <Tabs defaultValue="services" className="space-y-8">
-        <TabsList className="bg-[#0B0C0E]/50 border border-white/5 p-1 h-12 rounded-xl backdrop-blur-sm">
-          <TabsTrigger value="services" className="data-[state=active]:bg-white/5 data-[state=active]:text-white font-black uppercase italic tracking-widest text-[10px] h-full px-6">Services</TabsTrigger>
-          <TabsTrigger value="appearance" className="data-[state=active]:bg-white/5 data-[state=active]:text-white font-black uppercase italic tracking-widest text-[10px] h-full px-6">Appearance</TabsTrigger>
-          <TabsTrigger value="behaviour" className="data-[state=active]:bg-white/5 data-[state=active]:text-white font-black uppercase italic tracking-widest text-[10px] h-full px-6">Behaviour</TabsTrigger>
-          <TabsTrigger value="about" className="data-[state=active]:bg-white/5 data-[state=active]:text-white font-black uppercase italic tracking-widest text-[10px] h-full px-6">About</TabsTrigger>
+        <TabsList className="bg-surface/50 border border-foreground/5 p-1 h-12 rounded-xl backdrop-blur-sm">
+          <TabsTrigger value="services" className="data-[state=active]:bg-foreground/5 data-[state=active]:text-foreground font-black uppercase italic tracking-widest text-[10px] h-full px-6">Services</TabsTrigger>
+          <TabsTrigger value="appearance" className="data-[state=active]:bg-foreground/5 data-[state=active]:text-foreground font-black uppercase italic tracking-widest text-[10px] h-full px-6">Appearance</TabsTrigger>
+          <TabsTrigger value="behaviour" className="data-[state=active]:bg-foreground/5 data-[state=active]:text-foreground font-black uppercase italic tracking-widest text-[10px] h-full px-6">Behaviour</TabsTrigger>
+          <TabsTrigger value="about" className="data-[state=active]:bg-foreground/5 data-[state=active]:text-foreground font-black uppercase italic tracking-widest text-[10px] h-full px-6">About</TabsTrigger>
         </TabsList>
 
         <TabsContent value="services" className="space-y-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
             {/* Sonarr */}
-            <Card className="bg-[#0B0C0E]/50 backdrop-blur-sm border-sonarr/20 rounded-2xl overflow-hidden shadow-xl group">
-              <CardHeader className="border-b border-white/5 bg-white/2">
+            <Card className="bg-surface/50 backdrop-blur-sm border-sonarr/20 rounded-2xl overflow-hidden shadow-xl group">
+              <CardHeader className="border-b border-foreground/5 bg-foreground/2">
                 <div className="flex items-center justify-between">
                   <div className="flex flex-col gap-0.5">
                     <div className="flex items-center gap-2">
                         <div className="h-2 w-2 rounded-full bg-sonarr animate-pulse shadow-[0_0_8px_rgba(0,188,255,0.4)]" />
                         <CardTitle className="text-sonarr font-black uppercase italic tracking-tighter text-xl">Sonarr</CardTitle>
                     </div>
-                    <CardDescription className="text-[9px] font-bold uppercase tracking-[0.2em] text-white/30 italic">TV Dataset Bridge</CardDescription>
+                    <CardDescription className="text-[9px] font-bold uppercase tracking-[0.2em] text-foreground/30 italic">TV Dataset Bridge</CardDescription>
                   </div>
                   <Switch 
                     checked={sonarr.enabled}
@@ -147,21 +147,21 @@ export function SettingsPage() {
               {sonarr.enabled && (
                 <CardContent className="space-y-6 pt-6">
                   <div className="grid gap-2">
-                    <Label className="text-[10px] uppercase font-black tracking-widest text-white/40">Base URL</Label>
+                    <Label className="text-[10px] uppercase font-black tracking-widest text-foreground/40">Base URL</Label>
                     <Input 
                       value={sonarr.baseUrl} 
                       onChange={(e) => updateSonarr({ baseUrl: e.target.value })}
                       placeholder="http://192.168.1.100:8989"
-                      className="bg-white/5 border-white/10"
+                      className="bg-foreground/5 border-foreground/10"
                     />
                   </div>
                   <div className="grid gap-2">
-                    <Label className="text-[10px] uppercase font-black tracking-widest text-white/40">Terminal Key</Label>
+                    <Label className="text-[10px] uppercase font-black tracking-widest text-foreground/40">Terminal Key</Label>
                     <Input 
                       type="password"
                       value={sonarr.apiKey} 
                       onChange={(e) => updateSonarr({ apiKey: e.target.value })}
-                      className="bg-white/5 border-white/10"
+                      className="bg-foreground/5 border-foreground/10"
                     />
                   </div>
                   <Button 
@@ -176,15 +176,15 @@ export function SettingsPage() {
             </Card>
 
             {/* Radarr */}
-            <Card className="bg-[#0B0C0E]/50 backdrop-blur-sm border-radarr/20 rounded-2xl overflow-hidden shadow-xl group">
-              <CardHeader className="border-b border-white/5 bg-white/2">
+            <Card className="bg-surface/50 backdrop-blur-sm border-radarr/20 rounded-2xl overflow-hidden shadow-xl group">
+              <CardHeader className="border-b border-foreground/5 bg-foreground/2">
                 <div className="flex items-center justify-between">
                   <div className="flex flex-col gap-0.5">
                     <div className="flex items-center gap-2">
                         <div className="h-2 w-2 rounded-full bg-radarr animate-pulse shadow-[0_0_8px_rgba(245,158,11,0.4)]" />
                         <CardTitle className="text-radarr font-black uppercase italic tracking-tighter text-xl">Radarr</CardTitle>
                     </div>
-                    <CardDescription className="text-[9px] font-bold uppercase tracking-[0.2em] text-white/30 italic">Film Dataset Bridge</CardDescription>
+                    <CardDescription className="text-[9px] font-bold uppercase tracking-[0.2em] text-foreground/30 italic">Film Dataset Bridge</CardDescription>
                   </div>
                   <Switch 
                     checked={radarr.enabled}
@@ -196,21 +196,21 @@ export function SettingsPage() {
               {radarr.enabled && (
                 <CardContent className="space-y-6 pt-6">
                   <div className="grid gap-2">
-                    <Label className="text-[10px] uppercase font-black tracking-widest text-white/40">Base URL</Label>
+                    <Label className="text-[10px] uppercase font-black tracking-widest text-foreground/40">Base URL</Label>
                     <Input 
                       value={radarr.baseUrl} 
                       onChange={(e) => updateRadarr({ baseUrl: e.target.value })}
                       placeholder="http://192.168.1.100:7878"
-                      className="bg-white/5 border-white/10"
+                      className="bg-foreground/5 border-foreground/10"
                     />
                   </div>
                   <div className="grid gap-2">
-                    <Label className="text-[10px] uppercase font-black tracking-widest text-white/40">Terminal Key</Label>
+                    <Label className="text-[10px] uppercase font-black tracking-widest text-foreground/40">Terminal Key</Label>
                     <Input 
                       type="password"
                       value={radarr.apiKey} 
                       onChange={(e) => updateRadarr({ apiKey: e.target.value })}
-                      className="bg-white/5 border-white/10"
+                      className="bg-foreground/5 border-foreground/10"
                     />
                   </div>
                   <Button 
@@ -225,15 +225,15 @@ export function SettingsPage() {
             </Card>
 
             {/* Prowlarr */}
-            <Card className="bg-[#0B0C0E]/50 backdrop-blur-sm border-prowlarr/20 rounded-2xl overflow-hidden shadow-xl group">
-              <CardHeader className="border-b border-white/5 bg-white/2">
+            <Card className="bg-surface/50 backdrop-blur-sm border-prowlarr/20 rounded-2xl overflow-hidden shadow-xl group">
+              <CardHeader className="border-b border-foreground/5 bg-foreground/2">
                 <div className="flex items-center justify-between">
                   <div className="flex flex-col gap-0.5">
                     <div className="flex items-center gap-2">
                         <div className="h-2 w-2 rounded-full bg-prowlarr animate-pulse shadow-[0_0_8px_rgba(168,85,247,0.4)]" />
                         <CardTitle className="text-prowlarr font-black uppercase italic tracking-tighter text-xl">Prowlarr</CardTitle>
                     </div>
-                    <CardDescription className="text-[9px] font-bold uppercase tracking-[0.2em] text-white/30 italic">Indexer Protocol Bridge</CardDescription>
+                    <CardDescription className="text-[9px] font-bold uppercase tracking-[0.2em] text-foreground/30 italic">Indexer Protocol Bridge</CardDescription>
                   </div>
                   <Switch 
                     checked={prowlarr.enabled}
@@ -245,21 +245,21 @@ export function SettingsPage() {
               {prowlarr.enabled && (
                 <CardContent className="space-y-6 pt-6">
                   <div className="grid gap-2">
-                    <Label className="text-[10px] uppercase font-black tracking-widest text-white/40">Base URL</Label>
+                    <Label className="text-[10px] uppercase font-black tracking-widest text-foreground/40">Base URL</Label>
                     <Input 
                       value={prowlarr.baseUrl} 
                       onChange={(e) => updateProwlarr({ baseUrl: e.target.value })}
                       placeholder="http://192.168.1.100:9696"
-                      className="bg-white/5 border-white/10"
+                      className="bg-foreground/5 border-foreground/10"
                     />
                   </div>
                   <div className="grid gap-2">
-                    <Label className="text-[10px] uppercase font-black tracking-widest text-white/40">Terminal Key</Label>
+                    <Label className="text-[10px] uppercase font-black tracking-widest text-foreground/40">Terminal Key</Label>
                     <Input 
                       type="password"
                       value={prowlarr.apiKey} 
                       onChange={(e) => updateProwlarr({ apiKey: e.target.value })}
-                      className="bg-white/5 border-white/10"
+                      className="bg-foreground/5 border-foreground/10"
                     />
                   </div>
                   <Button 
@@ -274,15 +274,15 @@ export function SettingsPage() {
             </Card>
 
             {/* qBittorrent */}
-            <Card className="bg-[#0B0C0E]/50 backdrop-blur-sm border-accent/20 rounded-2xl overflow-hidden shadow-xl group">
-              <CardHeader className="border-b border-white/5 bg-white/2">
+            <Card className="bg-surface/50 backdrop-blur-sm border-accent/20 rounded-2xl overflow-hidden shadow-xl group">
+              <CardHeader className="border-b border-foreground/5 bg-foreground/2">
                 <div className="flex items-center justify-between">
                   <div className="flex flex-col gap-0.5">
                     <div className="flex items-center gap-2">
                         <div className="h-2 w-2 rounded-full bg-accent animate-pulse shadow-[0_0_8px_rgba(0,180,216,0.4)]" />
                         <CardTitle className="text-accent font-black uppercase italic tracking-tighter text-xl">qBittorrent</CardTitle>
                     </div>
-                    <CardDescription className="text-[9px] font-bold uppercase tracking-[0.2em] text-white/30 italic">Transport Control Layer</CardDescription>
+                    <CardDescription className="text-[9px] font-bold uppercase tracking-[0.2em] text-foreground/30 italic">Transport Control Layer</CardDescription>
                   </div>
                   <Switch 
                     checked={qbittorrent.enabled}
@@ -294,29 +294,29 @@ export function SettingsPage() {
               {qbittorrent.enabled && (
                 <CardContent className="space-y-6 pt-6">
                   <div className="grid gap-2">
-                    <Label className="text-[10px] uppercase font-black tracking-widest text-white/40">Base URL</Label>
+                    <Label className="text-[10px] uppercase font-black tracking-widest text-foreground/40">Base URL</Label>
                     <Input 
                       value={qbittorrent.baseUrl} 
                       onChange={(e) => updateQBittorrent({ baseUrl: e.target.value })}
                       placeholder="http://192.168.1.100:8080"
-                      className="bg-white/5 border-white/10"
+                      className="bg-foreground/5 border-foreground/10"
                     />
                   </div>
                   <div className="grid gap-2">
-                    <Label className="text-[10px] uppercase font-black tracking-widest text-white/40">Logistics Username</Label>
+                    <Label className="text-[10px] uppercase font-black tracking-widest text-foreground/40">Logistics Username</Label>
                     <Input 
                       value={qbittorrent.username} 
                       onChange={(e) => updateQBittorrent({ username: e.target.value })}
-                      className="bg-white/5 border-white/10"
+                      className="bg-foreground/5 border-foreground/10"
                     />
                   </div>
                   <div className="grid gap-2">
-                    <Label className="text-[10px] uppercase font-black tracking-widest text-white/40">Logistics Key</Label>
+                    <Label className="text-[10px] uppercase font-black tracking-widest text-foreground/40">Logistics Key</Label>
                     <Input 
                       type="password"
                       value={qbittorrent.password} 
                       onChange={(e) => updateQBittorrent({ password: e.target.value })}
-                      className="bg-white/5 border-white/10"
+                      className="bg-foreground/5 border-foreground/10"
                     />
                   </div>
                   <Button 
@@ -333,13 +333,13 @@ export function SettingsPage() {
         </TabsContent>
 
         <TabsContent value="appearance">
-          <Card className="bg-[#0B0C0E]/50 backdrop-blur-sm border-white/5 rounded-2xl overflow-hidden shadow-xl">
-            <CardHeader className="border-b border-white/5 bg-white/2">
+          <Card className="bg-surface/50 backdrop-blur-sm border-foreground/5 rounded-2xl overflow-hidden shadow-xl">
+            <CardHeader className="border-b border-foreground/5 bg-foreground/2">
                <div className="flex items-center gap-3">
                   <Palette className="text-accent h-5 w-5" />
                   <div>
-                    <CardTitle className="text-white font-black uppercase italic tracking-tighter">Theme Intelligence</CardTitle>
-                    <CardDescription className="text-[10px] font-bold uppercase tracking-widest text-white/30">Select a structural visual profile</CardDescription>
+                    <CardTitle className="text-foreground font-black uppercase italic tracking-tighter">Theme Intelligence</CardTitle>
+                    <CardDescription className="text-[10px] font-bold uppercase tracking-widest text-foreground/30">Select a structural visual profile</CardDescription>
                   </div>
                </div>
             </CardHeader>
@@ -353,13 +353,13 @@ export function SettingsPage() {
                       "flex flex-col items-start p-4 border rounded-2xl transition-all group relative overflow-hidden",
                       theme === t.id 
                         ? "border-accent bg-accent/5 ring-1 ring-accent" 
-                        : "border-white/5 bg-white/2 hover:border-white/20 hover:bg-white/5"
+                        : "border-foreground/5 bg-foreground/2 hover:border-foreground/20 hover:bg-foreground/5"
                     )}
                   >
                     <div className="flex items-center justify-between w-full mb-4">
                       <span className={cn(
                         "text-[10px] font-black uppercase tracking-[0.2em] italic transition-colors",
-                        theme === t.id ? "text-accent" : "text-white/40"
+                        theme === t.id ? "text-accent" : "text-foreground/40"
                       )}>
                         {t.name}
                       </span>
@@ -368,7 +368,7 @@ export function SettingsPage() {
                     
                     <div className="flex gap-2 w-full">
                        <div 
-                         className="h-12 w-full rounded-lg border border-white/10" 
+                         className="h-12 w-full rounded-lg border border-foreground/10" 
                          style={{ backgroundColor: t.bg }} 
                        />
                        <div 
@@ -379,26 +379,26 @@ export function SettingsPage() {
                          }} 
                        />
                     </div>
-                    <span className="mt-3 text-[9px] font-bold uppercase tracking-widest text-white/20 group-hover:text-white/40 transition-colors">
+                    <span className="mt-3 text-[9px] font-bold uppercase tracking-widest text-foreground/20 group-hover:text-foreground/40 transition-colors">
                       {t.label}
                     </span>
                   </button>
                 ))}
               </div>
 
-              <div className="grid gap-6 max-w-md pt-6 border-t border-white/5">
+              <div className="grid gap-6 max-w-md pt-6 border-t border-foreground/5">
                 <div className="grid gap-3">
                   <div className="flex items-center gap-2">
-                    <Monitor className="h-4 w-4 text-white/40" />
-                    <Label className="text-[11px] uppercase font-black tracking-widest text-white/60 italic">Fallback Logic</Label>
+                    <Monitor className="h-4 w-4 text-foreground/40" />
+                    <Label className="text-[11px] uppercase font-black tracking-widest text-foreground/60 italic">Fallback Logic</Label>
                   </div>
                   <Select value={['obsidian', 'matrix', 'void', 'nebula', 'glacier', 'ghost'].includes(theme) ? 'custom' : theme} onValueChange={(v: any) => {
                     if (v !== 'custom') updateSetting('theme', v);
                   }}>
-                    <SelectTrigger className="bg-white/5 border-white/10">
+                    <SelectTrigger className="bg-foreground/5 border-foreground/10">
                       <SelectValue placeholder="System Preference" />
                     </SelectTrigger>
-                    <SelectContent className="bg-surface-3 border-white/10">
+                    <SelectContent className="bg-surface-3 border-foreground/10">
                       <SelectItem value="system">Auto System Switch</SelectItem>
                       <SelectItem value="dark">Standard Dark</SelectItem>
                       <SelectItem value="light">Standard Light</SelectItem>
@@ -409,14 +409,14 @@ export function SettingsPage() {
 
                 <div className="grid gap-3">
                   <div className="flex items-center gap-2">
-                    <Layers className="h-4 w-4 text-white/40" />
-                    <Label className="text-[11px] uppercase font-black tracking-widest text-white/60 italic">Core Visualization</Label>
+                    <Layers className="h-4 w-4 text-foreground/40" />
+                    <Label className="text-[11px] uppercase font-black tracking-widest text-foreground/60 italic">Core Visualization</Label>
                   </div>
                   <Select value={defaultView} onValueChange={(v: any) => updateSetting('defaultView', v)}>
-                    <SelectTrigger className="bg-white/5 border-white/10">
+                    <SelectTrigger className="bg-foreground/5 border-foreground/10">
                       <SelectValue placeholder="Select view" />
                     </SelectTrigger>
-                    <SelectContent className="bg-surface-3 border-white/10">
+                    <SelectContent className="bg-surface-3 border-foreground/10">
                       <SelectItem value="grid">Grid Protocol (Posters)</SelectItem>
                       <SelectItem value="list">List Matrix (Table)</SelectItem>
                     </SelectContent>
@@ -428,19 +428,19 @@ export function SettingsPage() {
         </TabsContent>
 
         <TabsContent value="behaviour" className="space-y-8">
-          <Card className="bg-[#0B0C0E]/50 backdrop-blur-sm border-white/5 rounded-2xl overflow-hidden shadow-xl">
-            <CardHeader className="border-b border-white/5 bg-white/2">
-              <CardTitle className="text-white font-black uppercase italic tracking-tighter text-xl">Behaviour Settings</CardTitle>
-              <CardDescription className="text-[9px] font-bold uppercase tracking-widest text-white/30 italic">Initialize startup sequences and polling intervals</CardDescription>
+          <Card className="bg-surface/50 backdrop-blur-sm border-foreground/5 rounded-2xl overflow-hidden shadow-xl">
+            <CardHeader className="border-b border-foreground/5 bg-foreground/2">
+              <CardTitle className="text-foreground font-black uppercase italic tracking-tighter text-xl">Behaviour Settings</CardTitle>
+              <CardDescription className="text-[9px] font-bold uppercase tracking-widest text-foreground/30 italic">Initialize startup sequences and polling intervals</CardDescription>
             </CardHeader>
             <CardContent className="p-8 space-y-8">
               <div className="grid gap-3 max-w-sm">
-                <Label className="text-[10px] uppercase font-black tracking-widest text-white/40">Initial Load Target</Label>
+                <Label className="text-[10px] uppercase font-black tracking-widest text-foreground/40">Initial Load Target</Label>
                 <Select value={startupPage} onValueChange={(v: any) => updateSetting('startupPage', v)}>
-                  <SelectTrigger className="bg-white/5 border-white/10">
+                  <SelectTrigger className="bg-foreground/5 border-foreground/10">
                     <SelectValue placeholder="Select page" />
                   </SelectTrigger>
-                  <SelectContent className="bg-surface-3 border-white/10">
+                  <SelectContent className="bg-surface-3 border-foreground/10">
                     <SelectItem value="/">Dashboard Bridge</SelectItem>
                     <SelectItem value="/queue">Downlink Queue</SelectItem>
                     <SelectItem value="/sonarr">Sonarr Interface</SelectItem>
@@ -453,9 +453,9 @@ export function SettingsPage() {
         </TabsContent>
 
         <TabsContent value="about">
-          <Card className="bg-[#0B0C0E]/50 backdrop-blur-sm border-white/5 rounded-2xl overflow-hidden shadow-xl">
-            <CardHeader className="border-b border-white/5 bg-white/2">
-              <CardTitle className="text-white font-black uppercase italic tracking-tighter text-xl">Operational Intelligence</CardTitle>
+          <Card className="bg-surface/50 backdrop-blur-sm border-foreground/5 rounded-2xl overflow-hidden shadow-xl">
+            <CardHeader className="border-b border-foreground/5 bg-foreground/2">
+              <CardTitle className="text-foreground font-black uppercase italic tracking-tighter text-xl">Operational Intelligence</CardTitle>
             </CardHeader>
             <CardContent className="space-y-8 p-8">
               <div className="flex items-center gap-6">
@@ -463,10 +463,10 @@ export function SettingsPage() {
                   <img src="/icon.png" alt="ArrDeck" className="h-full w-full object-cover" />
                 </div>
                 <div className="space-y-1">
-                  <h4 className="text-2xl font-black text-white italic tracking-tighter">
-                    ArrDeck <span className="text-white/20">v{appVersion}</span>
+                  <h4 className="text-2xl font-black text-foreground italic tracking-tighter">
+                    ArrDeck <span className="text-foreground/20">v{appVersion}</span>
                   </h4>
-                  <p className="text-white/40 text-[10px] font-bold uppercase tracking-widest">A unified high-fidelity dashboard for the *arr fleet.</p>
+                  <p className="text-foreground/40 text-[10px] font-bold uppercase tracking-widest">A unified high-fidelity dashboard for the *arr fleet.</p>
                   {update && (
                     <p className="text-accent text-[10px] font-bold uppercase tracking-widest animate-pulse">
                       ↑ v{update.version} available
@@ -476,28 +476,19 @@ export function SettingsPage() {
               </div>
 
               {/* Update Control */}
-              <div className="rounded-xl border border-white/5 bg-white/2 p-6 space-y-4">
+              <div className="rounded-xl border border-foreground/5 bg-foreground/2 p-6 space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-[11px] font-black uppercase tracking-widest text-white/60 italic">Firmware Channel</p>
-                    <p className="text-[10px] text-white/30 mt-0.5">GitHub Releases · Stable</p>
+                    <p className="text-[11px] font-black uppercase tracking-widest text-foreground/60 italic">Firmware Channel</p>
+                    <p className="text-[10px] text-foreground/30 mt-0.5">GitHub Releases · Stable</p>
                   </div>
                   <Button
                     onClick={async () => {
                       await manualCheck();
-                      // After manualCheck resolves, the 'update' state in useUpdater is updated
-                      // We use a short timeout so React re-renders before we read the state
-                      setTimeout(() => {
-                        if (update) {
-                          toast.success(`Update available — v${update.version}`);
-                        } else {
-                          toast.success("You're up to date");
-                        }
-                      }, 200);
                     }}
                     disabled={isChecking || isDownloading || isInstalling}
                     variant="outline"
-                    className="text-white/40 hover:text-white text-[10px] font-black uppercase tracking-widest border-white/10 hover:border-accent/40 hover:bg-accent/5 gap-2"
+                    className="text-foreground/40 hover:text-foreground text-[10px] font-black uppercase tracking-widest border-foreground/10 hover:border-accent/40 hover:bg-accent/5 gap-2"
                   >
                     <RefreshCw className={cn('h-3 w-3', isChecking && 'animate-spin')} />
                     {isChecking ? 'Checking…' : 'Check Now'}
@@ -521,8 +512,8 @@ export function SettingsPage() {
 
                 {isDownloading && (
                   <div className="space-y-2">
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-white/50">Downloading — {downloadProgress}%</p>
-                    <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-foreground/50">Downloading — {downloadProgress}%</p>
+                    <div className="h-1.5 w-full bg-foreground/10 rounded-full overflow-hidden">
                       <div
                         className="h-full bg-accent rounded-full transition-all duration-300"
                         style={{ width: `${downloadProgress}%` }}
@@ -539,7 +530,7 @@ export function SettingsPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Button
                   variant="outline"
-                  className="text-white/40 hover:text-white text-[11px] font-black uppercase tracking-widest border-white/10 hover:border-accent/40 hover:bg-accent/5 gap-2"
+                  className="text-foreground/40 hover:text-foreground text-[11px] font-black uppercase tracking-widest border-foreground/10 hover:border-accent/40 hover:bg-accent/5 gap-2"
                   onClick={() => window.open('https://github.com/CJKaufman/ArrDeck')}
                 >
                   <ExternalLink className="h-3.5 w-3.5" />
@@ -547,7 +538,7 @@ export function SettingsPage() {
                 </Button>
                 <Button
                   variant="outline"
-                  className="text-white/40 hover:text-white text-[11px] font-black uppercase tracking-widest border-white/10 hover:border-accent/40 hover:bg-accent/5 gap-2"
+                  className="text-foreground/40 hover:text-foreground text-[11px] font-black uppercase tracking-widest border-foreground/10 hover:border-accent/40 hover:bg-accent/5 gap-2"
                   onClick={() => window.open('https://github.com/CJKaufman/ArrDeck/issues')}
                 >
                   <ExternalLink className="h-3.5 w-3.5" />

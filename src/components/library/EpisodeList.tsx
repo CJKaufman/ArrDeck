@@ -1,12 +1,21 @@
-import { useState, useMemo } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { sonarrService } from '../../services/sonarr.service';
-import { useSettingsStore } from '../../stores/settings.store';
-import { Button } from '../ui/button';
-import { Switch } from '../ui/switch';
-import { ChevronDown, ChevronRight, Search, LayoutList, CheckCircle2, Circle, AlertCircle, Loader2 } from 'lucide-react';
-import { ReleaseSearchDialog } from './ReleaseSearchDialog';
-import { toast } from 'sonner';
+import { useState, useMemo } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { sonarrService } from "../../services/sonarr.service";
+import { useSettingsStore } from "../../stores/settings.store";
+import { Button } from "../ui/button";
+import { Switch } from "../ui/switch";
+import {
+  ChevronDown,
+  ChevronRight,
+  Search,
+  LayoutList,
+  CheckCircle2,
+  Circle,
+  AlertCircle,
+  Loader2,
+} from "lucide-react";
+import { ReleaseSearchDialog } from "./ReleaseSearchDialog";
+import { toast } from "sonner";
 
 interface EpisodeListProps {
   seriesId: number;
@@ -15,22 +24,35 @@ interface EpisodeListProps {
 export function EpisodeList({ seriesId }: EpisodeListProps) {
   const { sonarr } = useSettingsStore();
   const queryClient = useQueryClient();
-  const [expandedSeasons, setExpandedSeasons] = useState<Record<number, boolean>>({});
+  const [expandedSeasons, setExpandedSeasons] = useState<
+    Record<number, boolean>
+  >({});
   const [searchOpen, setSearchOpen] = useState(false);
-  const [searchTarget, setSearchTarget] = useState<{ id: number; title: string } | null>(null);
+  const [searchTarget, setSearchTarget] = useState<{
+    id: number;
+    title: string;
+  } | null>(null);
 
   const { data: episodes, isLoading } = useQuery({
-    queryKey: ['sonarr', 'episodes', seriesId],
-    queryFn: () => sonarrService.getEpisodes(sonarr.baseUrl, sonarr.apiKey, seriesId),
+    queryKey: ["sonarr", "episodes", seriesId],
+    queryFn: () =>
+      sonarrService.getEpisodes(sonarr.baseUrl, sonarr.apiKey, seriesId),
     enabled: !!seriesId && !!sonarr.enabled,
   });
 
   const mutation = useMutation({
-    mutationFn: ({ id, monitored }: { id: number; monitored: boolean }) => 
-      sonarrService.updateEpisodeMonitoring(sonarr.baseUrl, sonarr.apiKey, [id], monitored),
+    mutationFn: ({ id, monitored }: { id: number; monitored: boolean }) =>
+      sonarrService.updateEpisodeMonitoring(
+        sonarr.baseUrl,
+        sonarr.apiKey,
+        [id],
+        monitored,
+      ),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['sonarr', 'episodes', seriesId] });
-      toast.success('Episode tracking updated');
+      queryClient.invalidateQueries({
+        queryKey: ["sonarr", "episodes", seriesId],
+      });
+      toast.success("Episode tracking updated");
     },
   });
 
@@ -44,21 +66,34 @@ export function EpisodeList({ seriesId }: EpisodeListProps) {
     return Object.keys(grouped)
       .map(Number)
       .sort((a, b) => b - a)
-      .map(num => ({ number: num, episodes: grouped[num].sort((a, b) => a.episodeNumber - b.episodeNumber) }));
+      .map((num) => ({
+        number: num,
+        episodes: grouped[num].sort(
+          (a, b) => a.episodeNumber - b.episodeNumber,
+        ),
+      }));
   }, [episodes]);
 
   const toggleSeason = (num: number) => {
-    setExpandedSeasons(prev => ({ ...prev, [num]: !prev[num] }));
+    setExpandedSeasons((prev) => ({ ...prev, [num]: !prev[num] }));
   };
 
   const handleInteractiveSearch = (ep: any) => {
-    setSearchTarget({ id: ep.id, title: `S${ep.seasonNumber}E${ep.episodeNumber} - ${ep.title}` });
+    setSearchTarget({
+      id: ep.id,
+      title: `S${ep.seasonNumber}E${ep.episodeNumber} - ${ep.title}`,
+    });
     setSearchOpen(true);
   };
 
   const handleAutomaticSearch = async (ep: any) => {
     try {
-      await sonarrService.triggerCommand(sonarr.baseUrl, sonarr.apiKey, 'EpisodeSearch', { episodeIds: [ep.id] });
+      await sonarrService.triggerCommand(
+        sonarr.baseUrl,
+        sonarr.apiKey,
+        "EpisodeSearch",
+        { episodeIds: [ep.id] },
+      );
       toast.success(`Search triggered for ${ep.title}`);
     } catch (err: any) {
       toast.error(`Failed to trigger search: ${err.message}`);
@@ -75,39 +110,55 @@ export function EpisodeList({ seriesId }: EpisodeListProps) {
 
   return (
     <div className="space-y-6">
-      {seasons.map(season => (
-        <div key={season.number} className="border border-white/10 rounded-2xl bg-white/5 backdrop-blur-md overflow-hidden shadow-lg">
-          <button 
+      {seasons.map((season) => (
+        <div
+          key={season.number}
+          className="border border-foreground/10 rounded-2xl bg-foreground/5 backdrop-blur-md overflow-hidden shadow-lg"
+        >
+          <button
             onClick={() => toggleSeason(season.number)}
-            className="w-full px-6 py-5 flex items-center justify-between hover:bg-white/10 transition-all text-left group"
+            className="w-full px-6 py-5 flex items-center justify-between hover:bg-foreground/10 transition-all text-left group"
           >
             <div className="flex items-center gap-4">
-              <div className="p-2 rounded-lg bg-white/5 group-hover:bg-accent/20 transition-colors">
-                {expandedSeasons[season.number] ? <ChevronDown className="h-5 w-5 text-accent" /> : <ChevronRight className="h-5 w-5 text-accent" />}
+              <div className="p-2 rounded-lg bg-foreground/5 group-hover:bg-accent/20 transition-colors">
+                {expandedSeasons[season.number] ? (
+                  <ChevronDown className="h-5 w-5 text-accent" />
+                ) : (
+                  <ChevronRight className="h-5 w-5 text-accent" />
+                )}
               </div>
               <div>
-                <span className="font-black text-lg tracking-tight text-white">
-                  {season.number === 0 ? 'Specials' : `Season ${season.number}`}
+                <span className="font-black text-lg tracking-tight text-foreground">
+                  {season.number === 0 ? "Specials" : `Season ${season.number}`}
                 </span>
-                <p className="text-[10px] uppercase font-black text-white/50 tracking-[0.2em] mt-0.5">
-                  {season.episodes.filter((e: any) => e.hasFile).length} OF {season.episodes.length} DOWNLOADED
+                <p className="text-[10px] uppercase font-black text-foreground/50 tracking-[0.2em] mt-0.5">
+                  {season.episodes.filter((e: any) => e.hasFile).length} OF{" "}
+                  {season.episodes.length} DOWNLOADED
                 </p>
               </div>
             </div>
           </button>
 
           {expandedSeasons[season.number] && (
-            <div className="border-t border-white/10 divide-y divide-white/5 bg-black/20">
+            <div className="border-t border-foreground/10 divide-y divide-foreground/5 bg-foreground/[0.02]">
               {season.episodes.map((ep: any) => (
-                <div key={ep.id} className="px-6 py-4 flex items-center gap-6 text-sm group hover:bg-white/[0.02] transition-colors">
+                <div
+                  key={ep.id}
+                  className="px-6 py-4 flex items-center gap-6 text-sm group hover:bg-foreground/[0.02] transition-colors"
+                >
                   <div className="w-10 shrink-0 text-muted-foreground font-black text-xs tracking-widest opacity-40">
-                    E{ep.episodeNumber < 10 ? `0${ep.episodeNumber}` : ep.episodeNumber}
+                    E
+                    {ep.episodeNumber < 10
+                      ? `0${ep.episodeNumber}`
+                      : ep.episodeNumber}
                   </div>
-                  
+
                   <div className="flex-1 min-w-0">
-                    <p className="font-black text-white truncate tracking-tight text-base group-hover:text-accent transition-colors drop-shadow-md">{ep.title}</p>
-                    <p className="text-[10px] font-bold text-white/50 uppercase tracking-wider mt-1 drop-shadow-sm">
-                      {ep.airDate || 'TBA'}
+                    <p className="font-black text-foreground truncate tracking-tight text-base group-hover:text-accent transition-colors drop-shadow-md">
+                      {ep.title}
+                    </p>
+                    <p className="text-[10px] font-bold text-foreground/50 uppercase tracking-wider mt-1 drop-shadow-sm">
+                      {ep.airDate || "TBA"}
                     </p>
                   </div>
 
@@ -118,27 +169,29 @@ export function EpisodeList({ seriesId }: EpisodeListProps) {
                       ) : ep.monitored ? (
                         <Circle className="h-4 w-4 text-accent shadow-[0_0_10px_rgba(0,184,212,0.3)]" />
                       ) : (
-                        <AlertCircle className="h-4 w-4 text-white/60 shadow-[0_0_10px_rgba(255,255,255,0.2)]" />
+                        <AlertCircle className="h-4 w-4 text-foreground/60 shadow-[0_0_10px_hsl(var(--foreground)/0.2)]" />
                       )}
-                      <span className={`text-[10px] uppercase font-black tracking-widest drop-shadow-md ${ep.hasFile ? 'text-status-ok' : ep.monitored ? 'text-accent' : 'text-white/60'}`}>
-                        {ep.hasFile ? 'On Disk' : 'Missing'}
+                      <span
+                        className={`text-[10px] uppercase font-black tracking-widest drop-shadow-md ${ep.hasFile ? "text-status-ok" : ep.monitored ? "text-accent" : "text-foreground/60"}`}
+                      >
+                        {ep.hasFile ? "On Disk" : "Missing"}
                       </span>
                     </div>
 
                     <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0">
-                      <Button 
-                        size="icon" 
-                        variant="ghost" 
-                        className="h-9 w-9 rounded-xl text-accent hover:bg-accent/20 border border-white/5"
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        className="h-9 w-9 rounded-xl text-accent hover:bg-accent/20 border border-foreground/5"
                         title="Automatic Search"
                         onClick={() => handleAutomaticSearch(ep)}
                       >
                         <Search className="h-4 w-4" />
                       </Button>
-                      <Button 
-                        size="icon" 
-                        variant="ghost" 
-                        className="h-9 w-9 rounded-xl text-sonarr hover:bg-sonarr/20 border border-white/5"
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        className="h-9 w-9 rounded-xl text-sonarr hover:bg-sonarr/20 border border-foreground/5"
                         title="Interactive Search"
                         onClick={() => handleInteractiveSearch(ep)}
                       >
@@ -146,9 +199,11 @@ export function EpisodeList({ seriesId }: EpisodeListProps) {
                       </Button>
                     </div>
 
-                    <Switch 
-                      checked={ep.monitored} 
-                      onCheckedChange={(v) => mutation.mutate({ id: ep.id, monitored: v })}
+                    <Switch
+                      checked={ep.monitored}
+                      onCheckedChange={(v) =>
+                        mutation.mutate({ id: ep.id, monitored: v })
+                      }
                       className="data-[state=checked]:bg-accent"
                     />
                   </div>
@@ -159,9 +214,8 @@ export function EpisodeList({ seriesId }: EpisodeListProps) {
         </div>
       ))}
 
-
       {searchTarget && (
-        <ReleaseSearchDialog 
+        <ReleaseSearchDialog
           open={searchOpen}
           onOpenChange={setSearchOpen}
           service="sonarr"

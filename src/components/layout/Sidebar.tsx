@@ -54,7 +54,7 @@ export function Sidebar() {
                 className={({isActive}) => `
                   flex items-center rounded-lg transition-all duration-200
                   ${isSidebarCollapsed ? 'justify-center p-3' : 'gap-3 px-3 py-2.5'}
-                  ${isActive ? 'text-white font-semibold' : 'text-muted-foreground hover:bg-white/5 hover:text-white'}
+                  ${isActive ? 'text-foreground font-semibold' : 'text-muted-foreground hover:bg-foreground/5 hover:text-foreground'}
                 `}
                 style={({isActive}: {isActive: boolean}) => isActive ? { backgroundColor: 'var(--accent-color)' } : {}}
               >
@@ -81,9 +81,9 @@ export function Sidebar() {
         {/* Deployment Section */}
         {appItems.length > 0 && (
           <div className="px-3">
-             <div className={`h-[1px] w-full bg-white/5 ${isSidebarCollapsed ? '' : 'mb-6'}`} />
+             <div className={`h-[1px] w-full bg-foreground/5 ${isSidebarCollapsed ? '' : 'mb-6'}`} />
              {!isSidebarCollapsed && (
-               <span className="text-[11px] uppercase font-black tracking-widest text-white/50 mb-4 block italic animate-in fade-in duration-500">Deployment</span>
+               <span className="text-[11px] uppercase font-black tracking-widest text-foreground/50 mb-4 block italic animate-in fade-in duration-500">Deployment</span>
              )}
           </div>
         )}
@@ -97,7 +97,7 @@ export function Sidebar() {
                 className={({isActive}) => `
                   flex items-center rounded-lg transition-all duration-200 group
                   ${isSidebarCollapsed ? 'justify-center p-3' : 'gap-3 px-3 py-2.5'}
-                  ${isActive ? `bg-white/5 ${item.color} shadow-sm border border-white/5` : 'text-muted-foreground hover:bg-white/5 hover:text-white'}
+                  ${isActive ? `bg-foreground/5 ${item.color} shadow-sm border border-foreground/5` : 'text-muted-foreground hover:bg-foreground/5 hover:text-foreground'}
                 `}
               >
                 <item.icon size={20} className="flex-shrink-0" />
@@ -120,7 +120,7 @@ export function Sidebar() {
           className={({isActive}) => `
             flex items-center rounded-lg transition-all duration-200
             ${isSidebarCollapsed ? 'justify-center p-3' : 'gap-3 px-3 py-2.5'}
-            ${isActive ? 'bg-white/5 text-foreground shadow-sm border border-white/5' : 'text-muted-foreground hover:bg-white/5 hover:text-white'}
+            ${isActive ? 'bg-foreground/5 text-foreground shadow-sm border border-foreground/5' : 'text-muted-foreground hover:bg-foreground/5 hover:text-foreground'}
           `}
         >
           <Settings size={20} className="flex-shrink-0" />
@@ -130,7 +130,7 @@ export function Sidebar() {
         <button
           onClick={toggleSidebar}
           className={`
-            w-full flex items-center rounded-lg hover:bg-white/5 text-muted-foreground hover:text-white transition-all group
+            w-full flex items-center rounded-lg hover:bg-foreground/5 text-muted-foreground hover:text-foreground transition-all group
             ${isSidebarCollapsed ? 'justify-center p-3' : 'gap-3 px-3 py-2.5'}
           `}
         >

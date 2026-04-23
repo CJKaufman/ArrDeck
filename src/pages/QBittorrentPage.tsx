@@ -120,7 +120,7 @@ export function QBittorrentPage() {
       <div className="h-full flex flex-col items-center justify-center text-center p-8 space-y-4">
         <AlertCircle size={64} className="text-muted-foreground opacity-20" />
         <h2 className="text-2xl font-black italic tracking-tighter uppercase uppercase">qBittorrent Disabled</h2>
-        <p className="text-white/40 font-bold text-[11px] uppercase tracking-widest max-w-sm">Enable BitTorrent logistics in the settings terminal to access the swarm.</p>
+        <p className="text-foreground/40 font-bold text-[11px] uppercase tracking-widest max-w-sm">Enable BitTorrent logistics in the settings terminal to access the swarm.</p>
       </div>
     );
   }
@@ -128,15 +128,15 @@ export function QBittorrentPage() {
   return (
     <div className="flex flex-col h-full overflow-hidden bg-base">
       {/* High-Density Command Header */}
-      <div className="flex flex-col border-b border-white/[0.05] bg-sidebar/30 backdrop-blur-md z-10">
+      <div className="flex flex-col border-b border-foreground/[0.05] bg-sidebar/30 backdrop-blur-md z-10">
         <div className="flex items-center justify-between px-6 py-3">
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2">
               <Zap className="h-4 w-4 text-accent animate-pulse" />
-              <h1 className="text-sm font-black italic uppercase tracking-tighter text-white">Swarm Control</h1>
+              <h1 className="text-sm font-black italic uppercase tracking-tighter text-foreground">Swarm Control</h1>
             </div>
             
-            <div className="h-4 w-px bg-white/10" />
+            <div className="h-4 w-px bg-foreground/10" />
 
             {/* Matrix Filters */}
             <div className="flex items-center gap-1">
@@ -147,8 +147,8 @@ export function QBittorrentPage() {
                   className={cn(
                     "px-3 py-1 rounded-md text-[9px] font-black uppercase tracking-widest transition-all",
                     filter === f 
-                      ? "bg-accent text-white shadow-[0_0_10px_var(--accent-soft)]" 
-                      : "text-white/30 hover:text-white/60 hover:bg-white/5"
+                      ? "bg-accent text-foreground shadow-[0_0_10px_var(--accent-soft)]" 
+                      : "text-foreground/30 hover:text-foreground/60 hover:bg-foreground/5"
                   )}
                 >
                   {f}
@@ -159,15 +159,15 @@ export function QBittorrentPage() {
 
           <div className="flex items-center gap-4">
             <div className="relative group">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3 w-3 text-white/20 group-focus-within:text-accent transition-colors" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3 w-3 text-foreground/20 group-focus-within:text-accent transition-colors" />
               <Input 
                 placeholder="Search Swarm..." 
-                className="h-8 pl-9 pr-4 bg-white/[0.03] border-white/10 focus:border-accent/30 focus:ring-accent/10 rounded-lg text-[10px] font-bold text-white w-64"
+                className="h-8 pl-9 pr-4 bg-foreground/[0.03] border-foreground/10 focus:border-accent/30 focus:ring-accent/10 rounded-lg text-[10px] font-bold text-foreground w-64"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
             </div>
-            <div className="h-4 w-px bg-white/10" />
+            <div className="h-4 w-px bg-foreground/10" />
             <AddTorrentDialog onSuccess={refetch} />
           </div>
         </div>
@@ -180,7 +180,7 @@ export function QBittorrentPage() {
             <TabsTrigger value="settings" className="data-[state=active]:bg-transparent data-[state=active]:text-accent border-b-2 border-transparent data-[state=active]:border-accent rounded-none h-full px-0 font-black uppercase italic tracking-widest text-[10px]">Client Settings</TabsTrigger>
           </TabsList>
           
-          <div className="flex items-center gap-4 text-[9px] font-black uppercase tracking-[0.2em] text-white/20">
+          <div className="flex items-center gap-4 text-[9px] font-black uppercase tracking-[0.2em] text-foreground/20">
              <span>{filteredTorrents.length} Items Loaded</span>
              <span>|</span>
              <span>{transfer?.connection_status || 'Unknown'} Status</span>
@@ -190,11 +190,11 @@ export function QBittorrentPage() {
         <TabsContent value="torrents" className="flex-1 min-h-0 m-0 overflow-hidden">
           <div className="h-full overflow-auto scrollbar-none">
             <table className="w-full border-collapse text-left select-none relative">
-              <thead className="sticky top-0 bg-base/90 backdrop-blur-md z-20 border-b border-white/[0.05]">
-                <tr className="text-white/30 text-[9px] font-black uppercase tracking-widest">
+              <thead className="sticky top-0 bg-base/90 backdrop-blur-md z-20 border-b border-foreground/[0.05]">
+                <tr className="text-foreground/30 text-[9px] font-black uppercase tracking-widest">
                   <th className="py-2 pl-4 w-[40px]"><Filter className="h-3 w-3" /></th>
-                  <th className="py-2 px-2 w-[100px] hover:text-white transition-colors cursor-pointer">Added</th>
-                  <th className="py-2 px-3 hover:text-white transition-colors cursor-pointer flex items-center gap-1.5">
+                  <th className="py-2 px-2 w-[100px] hover:text-foreground transition-colors cursor-pointer">Added</th>
+                  <th className="py-2 px-3 hover:text-foreground transition-colors cursor-pointer flex items-center gap-1.5">
                     Name <ArrowUpDown className="h-2 w-2" />
                   </th>
                   <th className="py-2 px-3 text-right w-[80px]">Size</th>
@@ -209,13 +209,13 @@ export function QBittorrentPage() {
               <tbody>
                 {isLoading ? (
                   Array.from({ length: 15 }).map((_, i) => (
-                    <tr key={i} className="animate-pulse border-b border-white/[0.02]">
-                       <td colSpan={10} className="py-4 px-4 bg-white/[0.01]" />
+                    <tr key={i} className="animate-pulse border-b border-foreground/[0.02]">
+                       <td colSpan={10} className="py-4 px-4 bg-foreground/[0.01]" />
                     </tr>
                   ))
                 ) : filteredTorrents.length === 0 ? (
                   <tr>
-                    <td colSpan={10} className="py-20 text-center text-white/10 italic font-black uppercase tracking-widest text-[10px]">
+                    <td colSpan={10} className="py-20 text-center text-foreground/10 italic font-black uppercase tracking-widest text-[10px]">
                       Void: No Transfers Registered
                     </td>
                   </tr>

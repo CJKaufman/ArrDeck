@@ -79,7 +79,7 @@ export function AddTorrentDialog({ onSuccess }: Props) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
         render={
-          <Button className="gap-2 bg-qbittorrent hover:bg-qbittorrent/90 text-white">
+          <Button className="gap-2 bg-qbittorrent hover:bg-qbittorrent/90 text-foreground">
             <Plus className="h-4 w-4" /> Add Torrent
           </Button>
         }
@@ -174,7 +174,7 @@ export function AddTorrentDialog({ onSuccess }: Props) {
             Cancel
           </Button>
           <Button 
-            className="bg-qbittorrent hover:bg-qbittorrent/90 text-white min-w-[100px]"
+            className="bg-qbittorrent hover:bg-qbittorrent/90 text-foreground min-w-[100px]"
             onClick={handleAdd}
             disabled={loading}
           >
