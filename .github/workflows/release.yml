@@ -45,6 +45,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_SIGNING_PRIVATE_KEY_B64: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          NODE_OPTIONS: "--no-deprecation"
         with:
           tagName: ${{ github.ref_name }}
           releaseName: ArrDeck ${{ github.ref_name }}
