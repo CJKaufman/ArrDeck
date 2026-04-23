@@ -31,3 +31,10 @@ src-tauri/gen/
 
 # Internal session logs — local only, not for public repo
 updates/
+
+# Signing keys (never commit these)
+final_linux_style
+final_linux_style.pub
+src-tauri/.tmp_signing_key
+*.key
+*.pub
