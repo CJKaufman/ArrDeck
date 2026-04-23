@@ -125,7 +125,7 @@ export function SettingsPage() {
         </TabsList>
 
         <TabsContent value="services" className="space-y-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
             {/* Sonarr */}
             <Card className="bg-[#0B0C0E]/50 backdrop-blur-sm border-sonarr/20 rounded-2xl overflow-hidden shadow-xl group">
               <CardHeader className="border-b border-white/5 bg-white/2">
