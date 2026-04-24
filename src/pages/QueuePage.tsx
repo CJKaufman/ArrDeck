@@ -1,9 +1,4 @@
 import { useState } from "react";
-import {
-  Tooltip,
-  TooltipTrigger,
-  TooltipContent,
-} from "../components/ui/tooltip";
 import { useUnifiedQueue } from "../hooks/useUnifiedQueue";
 import { ProgressBar } from "../components/common/ProgressBar";
 import { ServiceBadge } from "../components/common/ServiceBadge";
@@ -14,7 +9,6 @@ import {
   ListTree,
   AlertTriangle,
   PackageCheck,
-  Info,
 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { sonarrService } from "../services/sonarr.service";
@@ -230,52 +224,29 @@ export function QueuePage() {
 
                       {/* Status */}
                       <td className="py-3 px-3">
-                        <div className="flex items-center gap-1.5">
+                        <div className="flex flex-col gap-1">
                           {item.needsImport ? (
                             <span className="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest text-status-warning">
                               <AlertTriangle className="h-3 w-3 shrink-0" />
                               Import Required
                             </span>
                           ) : (
-                            <span className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-md bg-foreground/5 text-foreground/50">
+                            <span className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-md bg-foreground/5 text-foreground/50 w-fit">
                               {item.status}
                             </span>
                           )}
-
-                          {/* Status messages portal tooltip */}
-                          {hasMessages && (
-                            <Tooltip>
-                              <TooltipTrigger>
-                                <Info className="h-3 w-3 text-foreground/30 cursor-help shrink-0" />
-                              </TooltipTrigger>
-                              <TooltipContent
-                                side="top"
-                                showArrow={false}
-                                className="bg-popover text-foreground border border-foreground/10 rounded-xl p-3 shadow-lg max-w-72 space-y-2 inline-flex flex-col items-start gap-0"
-                              >
-                                {item.statusMessages.map((msg, mIdx) => (
-                                  <div
-                                    key={mIdx}
-                                    className="space-y-0.5 w-full"
-                                  >
-                                    {msg.title && (
-                                      <p className="text-[9px] font-black uppercase tracking-widest text-foreground/40 mb-1">
-                                        {msg.title}
-                                      </p>
-                                    )}
-                                    {msg.messages.map((m, i) => (
-                                      <p
-                                        key={i}
-                                        className="text-[10px] text-foreground/70 leading-snug"
-                                      >
-                                        {m}
-                                      </p>
-                                    ))}
-                                  </div>
-                                ))}
-                              </TooltipContent>
-                            </Tooltip>
-                          )}
+                          {hasMessages &&
+                            item.statusMessages
+                              .flatMap((m) => m.messages)
+                              .map((msg, i) => (
+                                <span
+                                  key={i}
+                                  className="text-[9px] text-foreground/40 font-medium leading-snug truncate max-w-45"
+                                  title={msg}
+                                >
+                                  {msg}
+                                </span>
+                              ))}
                         </div>
                       </td>
 
