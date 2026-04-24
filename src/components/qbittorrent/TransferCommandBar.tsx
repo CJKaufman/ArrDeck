@@ -72,7 +72,7 @@ export function TransferCommandBar({
               disabled={isUpdating}
               className="h-9 px-4 hover:bg-foreground/5 text-foreground/60 hover:text-foreground font-black italic uppercase tracking-tighter text-[11px] gap-2 transition-all"
             >
-              <Pause className="h-3 w-3 fill-status-warn text-status-warn" />
+              <Pause className="h-3 w-3 fill-status-warning text-status-warning" />
               Pause
             </Button>
           </div>

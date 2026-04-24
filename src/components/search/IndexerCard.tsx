@@ -66,7 +66,7 @@ export function IndexerCard({ indexer, onRefresh }: Props) {
   const statusColorClass = hasErrors
     ? "text-status-error"
     : hasWarnings
-      ? "text-status-warn"
+      ? "text-status-warning"
       : isHealthy
         ? "text-status-ok"
         : "text-foreground/40";
@@ -87,7 +87,7 @@ export function IndexerCard({ indexer, onRefresh }: Props) {
           hasErrors
             ? "bg-status-error/40"
             : hasWarnings
-              ? "bg-status-warn/40"
+              ? "bg-status-warning/40"
               : isHealthy
                 ? "bg-status-ok/40"
                 : "bg-foreground/5"
@@ -101,7 +101,7 @@ export function IndexerCard({ indexer, onRefresh }: Props) {
               hasErrors
                 ? "bg-status-error/10 border-status-error/30"
                 : hasWarnings
-                  ? "bg-status-warn/10 border-status-warn/30"
+                  ? "bg-status-warning/10 border-status-warning/30"
                   : isHealthy
                     ? "bg-status-ok/10 border-status-ok/30"
                     : "bg-foreground/5 border-foreground/10 text-foreground/20"
@@ -165,7 +165,7 @@ export function IndexerCard({ indexer, onRefresh }: Props) {
             System State
           </span>
           <span
-            className={`text-sm font-black uppercase italic drop-shadow-sm ${statusColorClass}`}
+            className={`text-xs font-black uppercase italic drop-shadow-sm truncate ${statusColorClass}`}
           >
             {isBackingOff
               ? "Backoff / Disabled"

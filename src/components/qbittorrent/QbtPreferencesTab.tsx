@@ -135,7 +135,7 @@ export function QbtPreferencesTab() {
         <Card className="bg-surface-2 border-border shadow-none">
           <CardHeader>
             <div className="flex items-center gap-2">
-              <Zap className="h-4 w-4 text-status-warn" />
+              <Zap className="h-4 w-4 text-status-warning" />
               <CardTitle className="text-sm uppercase tracking-wider opacity-60">
                 Alternative Limits
               </CardTitle>

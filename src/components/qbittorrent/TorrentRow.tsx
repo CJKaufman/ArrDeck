@@ -22,7 +22,8 @@ interface TorrentRowProps {
 const STATE_COLORS: any = {
   downloading: "text-accent border-accent/30 bg-accent/10",
   uploading: "text-status-ok border-status-ok/30 bg-status-ok/10",
-  stalledDL: "text-status-warn border-status-warn/30 bg-status-warn/10",
+  stalledDL:
+    "text-status-warning border-status-warning/30 bg-status-warning/10",
   pausedDL: "text-foreground/20 border-foreground/5 bg-foreground/2",
   pausedUP: "text-foreground/20 border-foreground/5 bg-foreground/2",
   error: "text-status-error border-status-error/30 bg-status-error/10",
@@ -127,7 +128,7 @@ export function TorrentRow({
               {isPaused ? (
                 <Play className="h-3 w-3 fill-status-ok text-status-ok" />
               ) : (
-                <Pause className="h-3 w-3 fill-status-warn text-status-warn" />
+                <Pause className="h-3 w-3 fill-status-warning text-status-warning" />
               )}
             </Button>
             <Button

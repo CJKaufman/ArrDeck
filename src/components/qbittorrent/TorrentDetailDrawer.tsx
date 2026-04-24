@@ -124,7 +124,7 @@ export function TorrentDetailDrawer({ torrent }: Props) {
                 value={`${torrent.num_seeds}`}
               />
               <StatCard
-                icon={<Clock className="h-4 w-4 text-status-warn" />}
+                icon={<Clock className="h-4 w-4 text-status-warning" />}
                 label="ETA"
                 value={
                   torrent.eta === 8640000
@@ -284,7 +284,7 @@ export function TorrentDetailDrawer({ torrent }: Props) {
                             tracker.status === 2
                               ? "text-status-ok"
                               : tracker.status === 0 || tracker.status === 1
-                                ? "text-status-warn"
+                                ? "text-status-warning"
                                 : "text-status-error"
                           }`}
                         >
