@@ -1,4 +1,5 @@
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
+use tauri::Manager;
 #[tauri::command]
 fn greet(name: &str) -> String {
     format!("Hello, {}! You've been greeted from Rust!", name)
@@ -18,7 +19,7 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![greet])
         .setup(|app| {
             if let Some(window) = app.get_webview_window("main") {
-                let _ = window.set_decorations(false);
+                let _ = window.set_decorations(false).ok();
             }
             Ok(())
         })
