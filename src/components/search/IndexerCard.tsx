@@ -152,7 +152,7 @@ export function IndexerCard({ indexer, onRefresh }: Props) {
       </div>
 
       <div className="grid grid-cols-2 gap-4">
-        <div className="bg-foreground/5 rounded-xl p-4 border border-foreground/5 flex flex-col gap-1 shadow-inner group-hover:bg-foreground/[0.02] transition-colors">
+        <div className="bg-foreground/5 rounded-xl p-4 border border-foreground/5 flex flex-col items-center gap-1 shadow-inner group-hover:bg-foreground/[0.02] transition-colors overflow-hidden">
           <span className="text-[9px] uppercase font-black tracking-widest text-foreground/30">
             Priority
           </span>
@@ -160,12 +160,12 @@ export function IndexerCard({ indexer, onRefresh }: Props) {
             {indexer.priority}
           </span>
         </div>
-        <div className="bg-foreground/5 rounded-xl p-4 border border-foreground/5 flex flex-col gap-1 shadow-inner group-hover:bg-foreground/[0.02] transition-colors">
+        <div className="bg-foreground/5 rounded-xl p-4 border border-foreground/5 flex flex-col items-center gap-1 shadow-inner group-hover:bg-foreground/[0.02] transition-colors overflow-hidden">
           <span className="text-[9px] uppercase font-black tracking-widest text-foreground/30">
             System State
           </span>
           <span
-            className={`text-xs font-black uppercase italic drop-shadow-sm truncate ${statusColorClass}`}
+            className={`text-xs font-black uppercase italic drop-shadow-sm text-center leading-tight ${statusColorClass}`}
           >
             {isBackingOff
               ? "Backoff / Disabled"
