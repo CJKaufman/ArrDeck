@@ -1,19 +1,19 @@
-import { NavLink } from 'react-router-dom';
-import { 
-  LayoutDashboard, 
-  ListTree, 
-  Search, 
-  Tv, 
-  Film, 
-  Link as LinkIcon, 
+import { NavLink } from "react-router-dom";
+import {
+  LayoutDashboard,
+  ListTree,
+  Search,
+  Tv,
+  Film,
+  Link as LinkIcon,
   Settings,
   Download,
   ChevronLeft,
-  ChevronRight
-} from 'lucide-react';
-import { useUnifiedQueue } from '../../hooks/useUnifiedQueue';
-import { useUIStore } from '../../stores/ui.store';
-import { useSettingsStore } from '../../stores/settings.store';
+  ChevronRight,
+} from "lucide-react";
+import { useUnifiedQueue } from "../../hooks/useUnifiedQueue";
+import { useUIStore } from "../../stores/ui.store";
+import { useSettingsStore } from "../../stores/settings.store";
 
 export function Sidebar() {
   const { count } = useUnifiedQueue();
@@ -21,25 +21,55 @@ export function Sidebar() {
   const { sonarr, radarr, prowlarr, qbittorrent } = useSettingsStore();
 
   const navItems = [
-    { to: '/', icon: LayoutDashboard, label: 'Dashboard' },
-    { to: '/queue', icon: ListTree, label: 'Queue', count },
-    { to: '/search', icon: Search, label: 'Search' },
-    { to: '/qbittorrent', icon: Download, label: 'qBittorrent', color: 'text-qbittorrent', enabled: qbittorrent.enabled },
-  ].filter(item => item.enabled !== false);
+    { to: "/", icon: LayoutDashboard, label: "Dashboard" },
+    { to: "/queue", icon: ListTree, label: "Queue", count },
+    { to: "/search", icon: Search, label: "Search" },
+    {
+      to: "/qbittorrent",
+      icon: Download,
+      label: "qBittorrent",
+      color: "text-qbittorrent",
+      enabled: qbittorrent.enabled,
+    },
+  ].filter((item) => item.enabled !== false);
 
   const appItems = [
-    { to: '/sonarr', icon: Tv, label: 'Sonarr', color: 'text-sonarr', enabled: sonarr.enabled },
-    { to: '/radarr', icon: Film, label: 'Radarr', color: 'text-radarr', enabled: radarr.enabled },
-    { to: '/prowlarr', icon: LinkIcon, label: 'Prowlarr', color: 'text-prowlarr', enabled: prowlarr.enabled },
-  ].filter(item => item.enabled !== false);
+    {
+      to: "/sonarr",
+      icon: Tv,
+      label: "Sonarr",
+      color: "text-sonarr",
+      enabled: sonarr.enabled,
+    },
+    {
+      to: "/radarr",
+      icon: Film,
+      label: "Radarr",
+      color: "text-radarr",
+      enabled: radarr.enabled,
+    },
+    {
+      to: "/prowlarr",
+      icon: LinkIcon,
+      label: "Prowlarr",
+      color: "text-prowlarr",
+      enabled: prowlarr.enabled,
+    },
+  ].filter((item) => item.enabled !== false);
 
   return (
-    <aside className={`${isSidebarCollapsed ? 'w-20' : 'w-64'} bg-sidebar border-r border-border h-full flex flex-col transition-all duration-300 ease-in-out supports-[height:100vh]:h-[100vh] relative z-50 shadow-2xl overflow-hidden`}>
+    <aside
+      className={`${isSidebarCollapsed ? "w-20" : "w-64"} bg-sidebar border-r border-border h-full flex flex-col transition-all duration-300 ease-in-out relative z-50 shadow-2xl overflow-hidden`}
+    >
       {/* Brand Header */}
-      <div className={`p-4 border-b border-border font-semibold text-lg flex items-center ${isSidebarCollapsed ? 'justify-center' : 'gap-2'}`}>
+      <div
+        className={`p-4 border-b border-border font-semibold text-lg flex items-center ${isSidebarCollapsed ? "justify-center" : "gap-2"}`}
+      >
         <Tv className="text-sonarr flex-shrink-0" />
         {!isSidebarCollapsed && (
-          <span className="text-foreground animate-in fade-in slide-in-from-left-2 duration-300">ArrDeck</span>
+          <span className="text-foreground animate-in fade-in slide-in-from-left-2 duration-300">
+            ArrDeck
+          </span>
         )}
       </div>
 
@@ -48,17 +78,22 @@ export function Sidebar() {
         <ul className="space-y-1">
           {navItems.map((item) => (
             <li key={item.to} className="relative group">
-              <NavLink 
-                to={item.to} 
+              <NavLink
+                to={item.to}
                 title={isSidebarCollapsed ? item.label : undefined}
-                className={({isActive}) => `
+                className={({ isActive }) => `
                   flex items-center rounded-lg transition-all duration-200
-                  ${isSidebarCollapsed ? 'justify-center p-3' : 'gap-3 px-3 py-2.5'}
-                  ${isActive ? 'text-foreground font-semibold' : 'text-muted-foreground hover:bg-foreground/5 hover:text-foreground'}
+                  ${isSidebarCollapsed ? "justify-center p-3" : "gap-3 px-3 py-2.5"}
+                  ${isActive ? "text-foreground font-semibold" : "text-muted-foreground hover:bg-foreground/5 hover:text-foreground"}
                 `}
-                style={({isActive}: {isActive: boolean}) => isActive ? { backgroundColor: 'var(--accent-color)' } : {}}
+                style={({ isActive }: { isActive: boolean }) =>
+                  isActive ? { backgroundColor: "var(--accent-color)" } : {}
+                }
               >
-                <item.icon size={20} className={`flex-shrink-0 ${item.color || ''}`} />
+                <item.icon
+                  size={20}
+                  className={`flex-shrink-0 ${item.color || ""}`}
+                />
                 {!isSidebarCollapsed && (
                   <div className="flex-1 flex items-center justify-between min-w-0 animate-in fade-in slide-in-from-left-2 duration-300">
                     <span className="truncate">{item.label}</span>
@@ -70,9 +105,11 @@ export function Sidebar() {
                   </div>
                 )}
                 {/* Collapsed Badge Dot */}
-                {isSidebarCollapsed && item.count !== undefined && item.count > 0 && (
-                   <div className="absolute top-2 right-2 w-2 h-2 bg-accent rounded-full border border-surface-2" />
-                )}
+                {isSidebarCollapsed &&
+                  item.count !== undefined &&
+                  item.count > 0 && (
+                    <div className="absolute top-2 right-2 w-2 h-2 bg-accent rounded-full border border-surface-2" />
+                  )}
               </NavLink>
             </li>
           ))}
@@ -81,23 +118,27 @@ export function Sidebar() {
         {/* Deployment Section */}
         {appItems.length > 0 && (
           <div className="px-3">
-             <div className={`h-[1px] w-full bg-foreground/5 ${isSidebarCollapsed ? '' : 'mb-6'}`} />
-             {!isSidebarCollapsed && (
-               <span className="text-[11px] uppercase font-black tracking-widest text-foreground/50 mb-4 block italic animate-in fade-in duration-500">Deployment</span>
-             )}
+            <div
+              className={`h-[1px] w-full bg-foreground/5 ${isSidebarCollapsed ? "" : "mb-6"}`}
+            />
+            {!isSidebarCollapsed && (
+              <span className="text-[11px] uppercase font-black tracking-widest text-foreground/50 mb-4 block italic animate-in fade-in duration-500">
+                Deployment
+              </span>
+            )}
           </div>
         )}
 
         <ul className="space-y-1">
           {appItems.map((item) => (
             <li key={item.to}>
-              <NavLink 
-                to={item.to} 
+              <NavLink
+                to={item.to}
                 title={isSidebarCollapsed ? item.label : undefined}
-                className={({isActive}) => `
+                className={({ isActive }) => `
                   flex items-center rounded-lg transition-all duration-200 group
-                  ${isSidebarCollapsed ? 'justify-center p-3' : 'gap-3 px-3 py-2.5'}
-                  ${isActive ? `bg-foreground/5 ${item.color} shadow-sm border border-foreground/5` : 'text-muted-foreground hover:bg-foreground/5 hover:text-foreground'}
+                  ${isSidebarCollapsed ? "justify-center p-3" : "gap-3 px-3 py-2.5"}
+                  ${isActive ? `bg-foreground/5 ${item.color} shadow-sm border border-foreground/5` : "text-muted-foreground hover:bg-foreground/5 hover:text-foreground"}
                 `}
               >
                 <item.icon size={20} className="flex-shrink-0" />
@@ -114,29 +155,39 @@ export function Sidebar() {
 
       {/* Footer Actions */}
       <div className="p-3 border-t border-border space-y-2">
-        <NavLink 
-          to="/settings" 
-          title={isSidebarCollapsed ? 'Settings' : undefined}
-          className={({isActive}) => `
+        <NavLink
+          to="/settings"
+          title={isSidebarCollapsed ? "Settings" : undefined}
+          className={({ isActive }) => `
             flex items-center rounded-lg transition-all duration-200
-            ${isSidebarCollapsed ? 'justify-center p-3' : 'gap-3 px-3 py-2.5'}
-            ${isActive ? 'bg-foreground/5 text-foreground shadow-sm border border-foreground/5' : 'text-muted-foreground hover:bg-foreground/5 hover:text-foreground'}
+            ${isSidebarCollapsed ? "justify-center p-3" : "gap-3 px-3 py-2.5"}
+            ${isActive ? "bg-foreground/5 text-foreground shadow-sm border border-foreground/5" : "text-muted-foreground hover:bg-foreground/5 hover:text-foreground"}
           `}
         >
           <Settings size={20} className="flex-shrink-0" />
-          {!isSidebarCollapsed && <span className="truncate animate-in fade-in slide-in-from-left-2 duration-300">Settings</span>}
+          {!isSidebarCollapsed && (
+            <span className="truncate animate-in fade-in slide-in-from-left-2 duration-300">
+              Settings
+            </span>
+          )}
         </NavLink>
 
         <button
           onClick={toggleSidebar}
           className={`
             w-full flex items-center rounded-lg hover:bg-foreground/5 text-muted-foreground hover:text-foreground transition-all group
-            ${isSidebarCollapsed ? 'justify-center p-3' : 'gap-3 px-3 py-2.5'}
+            ${isSidebarCollapsed ? "justify-center p-3" : "gap-3 px-3 py-2.5"}
           `}
         >
-          {isSidebarCollapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
+          {isSidebarCollapsed ? (
+            <ChevronRight size={20} />
+          ) : (
+            <ChevronLeft size={20} />
+          )}
           {!isSidebarCollapsed && (
-            <span className="truncate font-black text-[11px] uppercase tracking-[0.2em] opacity-80 group-hover:opacity-100 transition-opacity">Collapse Bay</span>
+            <span className="truncate font-black text-[11px] uppercase tracking-[0.2em] opacity-80 group-hover:opacity-100 transition-opacity">
+              Collapse Bay
+            </span>
           )}
         </button>
       </div>
