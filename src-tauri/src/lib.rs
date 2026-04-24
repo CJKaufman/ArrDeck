@@ -1,5 +1,7 @@
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 use tauri::Manager;
+use tauri::WebviewUrl;
+use tauri::WebviewWindowBuilder;
 use tauri_plugin_window_state::StateFlags;
 #[tauri::command]
 fn greet(name: &str) -> String {
@@ -23,9 +25,12 @@ pub fn run() {
         .plugin(tauri_plugin_updater::Builder::new().build())
         .invoke_handler(tauri::generate_handler![greet])
         .setup(|app| {
-            if let Some(window) = app.get_webview_window("main") {
-                let _ = window.set_decorations(false).ok();
-            }
+            WebviewWindowBuilder::new(app, "main", WebviewUrl::App("index.html".into()))
+                .title("ArrDeck")
+                .inner_size(1280.0, 800.0)
+                .min_inner_size(800.0, 500.0)
+                .decorations(false)
+                .build()?;
             Ok(())
         })
         .run(tauri::generate_context!())
