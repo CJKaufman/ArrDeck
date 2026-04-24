@@ -10,7 +10,16 @@
     "frontendDist": "../dist"
   },
   "app": {
-    "windows": [],
+    "windows": [
+      {
+        "label": "main",
+        "title": "ArrDeck",
+        "width": 1280,
+        "height": 800,
+        "minWidth": 800,
+        "minHeight": 500
+      }
+    ],
     "security": {
       "csp": null
     }

@@ -10,7 +10,6 @@ import { useShortcuts } from "../../hooks/useShortcuts";
 import { useWindowState } from "../../hooks/useWindowState";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { OnboardingFlow } from "../onboarding/OnboardingFlow";
-import { TitleBar } from "./TitleBar";
 
 export function AppShell() {
   const { theme, isOnboarded } = useSettingsStore();
@@ -45,18 +44,15 @@ export function AppShell() {
   }
 
   return (
-    <div className="flex flex-col h-screen bg-base text-foreground overflow-hidden">
-      <TitleBar />
-      <div className="flex flex-1 min-h-0 overflow-hidden">
-        <Sidebar />
-        <div className="flex-1 flex flex-col min-w-0 relative overflow-hidden">
-          <UpdateBanner />
-          <main className="flex-1 overflow-y-auto bg-base relative transition-all duration-300 ease-in-out pb-12">
-            <Outlet />
-          </main>
-          <TransferStatsBar />
-          <NotificationManager />
-        </div>
+    <div className="flex h-screen bg-base text-foreground overflow-hidden">
+      <Sidebar />
+      <div className="flex-1 flex flex-col min-w-0 relative">
+        <UpdateBanner />
+        <main className="flex-1 overflow-y-auto bg-base relative transition-all duration-300 ease-in-out pb-12">
+          <Outlet />
+        </main>
+        <TransferStatsBar />
+        <NotificationManager />
       </div>
       <Toaster
         theme={theme as any}
