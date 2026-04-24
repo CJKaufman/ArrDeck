@@ -1,5 +1,5 @@
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-use tauri::Manager;
+
 use tauri::WebviewUrl;
 use tauri::WebviewWindowBuilder;
 use tauri_plugin_window_state::StateFlags;
@@ -11,6 +11,7 @@ mod win32 {
     extern "system" {
         pub fn GetWindowLongPtrW(hwnd: isize, index: i32) -> isize;
         pub fn SetWindowLongPtrW(hwnd: isize, index: i32, value: isize) -> isize;
+        pub fn GetAncestor(hwnd: isize, flags: u32) -> isize;
         pub fn SetWindowPos(
             hwnd: isize,
             hwnd_insert_after: isize,
@@ -25,6 +26,7 @@ mod win32 {
     pub const GWL_STYLE: i32 = -16;
     pub const WS_CAPTION: isize = 0x00C00000;
     pub const WS_THICKFRAME: isize = 0x00040000;
+    pub const GA_ROOT: u32 = 2;
     // SetWindowPos flags
     pub const SWP_FRAMECHANGED: u32 = 0x0020;
     pub const SWP_NOMOVE: u32 = 0x0002;
@@ -34,11 +36,24 @@ mod win32 {
 }
 
 /// Strips WS_CAPTION (title bar) from the Win32 window style and forces a frame
-/// recalculation. This is more direct than Tauri's set_decorations() and cannot
-/// be overridden by the window-state plugin.
+/// recalculation. Walks up to the root ancestor first because the HWND from
+/// raw_window_handle may be the inner WebView2 child window, not the outer
+/// application frame that actually owns the title bar.
 #[cfg(target_os = "windows")]
-unsafe fn strip_title_bar(hwnd: isize) {
+unsafe fn strip_title_bar(child_hwnd: isize) {
     use win32::*;
+
+    // Walk up to the root ancestor — the raw handle from Tauri/WebView2 is often
+    // a child HWND; GetAncestor(GA_ROOT) gives us the top-level frame window.
+    let hwnd = {
+        let root = GetAncestor(child_hwnd, GA_ROOT);
+        if root != 0 {
+            root
+        } else {
+            child_hwnd
+        }
+    };
+
     let style = GetWindowLongPtrW(hwnd, GWL_STYLE);
     SetWindowLongPtrW(hwnd, GWL_STYLE, style & !(WS_CAPTION | WS_THICKFRAME));
     SetWindowPos(
