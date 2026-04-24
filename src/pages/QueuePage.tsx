@@ -1,4 +1,9 @@
 import { useState } from "react";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "../components/ui/tooltip";
 import { useUnifiedQueue } from "../hooks/useUnifiedQueue";
 import { ProgressBar } from "../components/common/ProgressBar";
 import { ServiceBadge } from "../components/common/ServiceBadge";
@@ -237,33 +242,39 @@ export function QueuePage() {
                             </span>
                           )}
 
-                          {/* Status messages hover tooltip */}
+                          {/* Status messages portal tooltip */}
                           {hasMessages && (
-                            <div className="relative group/tooltip">
-                              <Info className="h-3 w-3 text-foreground/30 cursor-help shrink-0" />
-                              {/* Tooltip panel */}
-                              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover/tooltip:block z-50 min-w-50 max-w-75 pointer-events-none">
-                                <div className="bg-popover border border-foreground/10 rounded-xl p-3 shadow-lg space-y-2">
-                                  {item.statusMessages.map((msg, mIdx) => (
-                                    <div key={mIdx} className="space-y-0.5">
-                                      {msg.title && (
-                                        <p className="text-[9px] font-black uppercase tracking-widest text-foreground/40 mb-1">
-                                          {msg.title}
-                                        </p>
-                                      )}
-                                      {msg.messages.map((m, i) => (
-                                        <p
-                                          key={i}
-                                          className="text-[10px] text-foreground/70 leading-snug"
-                                        >
-                                          {m}
-                                        </p>
-                                      ))}
-                                    </div>
-                                  ))}
-                                </div>
-                              </div>
-                            </div>
+                            <Tooltip>
+                              <TooltipTrigger>
+                                <Info className="h-3 w-3 text-foreground/30 cursor-help shrink-0" />
+                              </TooltipTrigger>
+                              <TooltipContent
+                                side="top"
+                                showArrow={false}
+                                className="bg-popover text-foreground border border-foreground/10 rounded-xl p-3 shadow-lg max-w-72 space-y-2 inline-flex flex-col items-start gap-0"
+                              >
+                                {item.statusMessages.map((msg, mIdx) => (
+                                  <div
+                                    key={mIdx}
+                                    className="space-y-0.5 w-full"
+                                  >
+                                    {msg.title && (
+                                      <p className="text-[9px] font-black uppercase tracking-widest text-foreground/40 mb-1">
+                                        {msg.title}
+                                      </p>
+                                    )}
+                                    {msg.messages.map((m, i) => (
+                                      <p
+                                        key={i}
+                                        className="text-[10px] text-foreground/70 leading-snug"
+                                      >
+                                        {m}
+                                      </p>
+                                    ))}
+                                  </div>
+                                ))}
+                              </TooltipContent>
+                            </Tooltip>
                           )}
                         </div>
                       </td>
