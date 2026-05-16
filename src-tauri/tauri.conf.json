@@ -14,8 +14,10 @@
       {
         "label": "main",
         "title": "ArrDeck",
-        "width": 800,
-        "height": 600
+        "width": 1280,
+        "height": 800,
+        "minWidth": 800,
+        "minHeight": 500
       }
     ],
     "security": {
@@ -44,4 +46,3 @@
     }
   }
 }
-

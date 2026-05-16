@@ -1,24 +1,21 @@
-import { Outlet, useLocation } from 'react-router-dom';
-import { Sidebar } from './Sidebar';
-import { useSettingsStore } from '../../stores/settings.store';
-import { useEffect } from 'react';
-import { Toaster } from '../ui/sonner';
-import { TransferStatsBar } from '../qbittorrent/TransferStatsBar';
-import { NotificationManager } from '../system/NotificationManager';
-import { UpdateBanner } from '../system/UpdateBanner';
-import { useShortcuts } from '../../hooks/useShortcuts';
-import { useWindowState } from '../../hooks/useWindowState';
-import { getCurrentWindow } from '@tauri-apps/api/window';
-import { OnboardingFlow } from '../onboarding/OnboardingFlow';
+import { Outlet, useLocation } from "react-router-dom";
+import { Sidebar } from "./Sidebar";
+import { useSettingsStore } from "../../stores/settings.store";
+import { useEffect } from "react";
+import { Toaster } from "../ui/sonner";
+import { TransferStatsBar } from "../qbittorrent/TransferStatsBar";
+import { NotificationManager } from "../system/NotificationManager";
+import { UpdateBanner } from "../system/UpdateBanner";
+import { useShortcuts } from "../../hooks/useShortcuts";
+import { useWindowState } from "../../hooks/useWindowState";
+import { getCurrentWindow } from "@tauri-apps/api/window";
+import { OnboardingFlow } from "../onboarding/OnboardingFlow";
 
 export function AppShell() {
   const { theme, isOnboarded } = useSettingsStore();
   const location = useLocation();
   useShortcuts();
   useWindowState();
-
-
-
 
   // Handle dynamic window title with Tauri safety guard
   useEffect(() => {
@@ -33,7 +30,9 @@ export function AppShell() {
 
     try {
       const path = location.pathname.substring(1);
-      const title = path ? path.charAt(0).toUpperCase() + path.slice(1) : 'Dashboard';
+      const title = path
+        ? path.charAt(0).toUpperCase() + path.slice(1)
+        : "Dashboard";
       appWindow.setTitle(`ArrDeck — ${title}`);
     } catch (e) {
       // Title management failed
@@ -59,7 +58,8 @@ export function AppShell() {
         theme={theme as any}
         position="top-center"
         toastOptions={{
-          className: "bg-surface border-border text-foreground font-black uppercase tracking-widest text-[10px]",
+          className:
+            "bg-surface border-border text-foreground font-black uppercase tracking-widest text-[10px]",
         }}
       />
     </div>
